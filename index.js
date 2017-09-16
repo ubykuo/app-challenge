@@ -1,11 +1,27 @@
-var express = require('express');
-var app = express();
+"use strict";
+const express = require('express');
+const config = require(__dirname + '/config');
+const bodyParser = require('body-parser')
 
-app.set('port', (process.env.PORT || 5000));
 
+//Api routes
+const auth = require(__dirname + '/routes/auth');
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+const app = express();
+
+app.use(bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+}));
+
+app.set('port', (process.env.PORT || config.port));
+
+app.use('/api/auth', auth);
+
+app.use('/', express.static(__dirname + '/front/dist'));
+
+app.use((req, res)=>{
+    res.sendFile(__dirname + '/front/dist/index.html');
 });
 
 app.listen(app.get('port'), function () {
