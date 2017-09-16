@@ -19,7 +19,6 @@
             'Access-Control-Allow-Origin': '*',
           },
         }).then(() => {
-          debugger;
         });
       },
     },
