@@ -8,7 +8,23 @@
 <script>
   export default {
     name: 'hello',
-    data () {
+    methods: {
+      onClick() {
+        axios.get('https://accounts.spotify.com/authorize', {
+          params: {
+            client_id: 'da73848fd0704f87a74b4d5d88dc1642',
+            response_type: 'code',
+            redirect_uri: '/',
+          },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }).then(() => {
+          debugger;
+        });
+      },
+    },
+    data() {
       return {
         msg: 'Welcome to Your Vue.js PWA',
         url_base: 'https://accounts.spotify.com/authorize',
