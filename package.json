@@ -4,7 +4,9 @@
   "description": "Test for the app-challenge",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "preinstall": "cd front && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,6 @@
     "bluebird": "^3.5.0",
     "express": "^4.15.4",
     "mongoose": "^4.11.11",
-    "body-parser": "^1.18.1",
-    "express": "^4.15.4"
+    "body-parser": "^1.18.1"
   }
 }
