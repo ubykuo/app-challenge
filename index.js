@@ -16,12 +16,13 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.set('port', (process.env.PORT || config.port));
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+app.use('/api/auth', auth);
+
+app.use('/', express.static(__dirname + '/front/dist'));
+
+app.use((req, res)=>{
+    res.sendFile(__dirname + '/front/dist/index.html');
 });
-
-app.use('/api', auth);
-
 
 app.listen(app.get('port'), function () {
   console.log('Example app listening on port', app.get('port'));
