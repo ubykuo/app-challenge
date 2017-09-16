@@ -20,7 +20,6 @@
       }
     },
     created () {
-      debugger
     }
   }
 </script>
