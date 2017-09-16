@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ubykuo/app-challenge#readme",
   "dependencies": {
+    "body-parser": "^1.18.1",
     "express": "^4.15.4"
   }
 }
