@@ -1,6 +1,6 @@
 {
-  "name": "app-challenge-front",
-  "short_name": "challenge",
+  "name": "front",
+  "short_name": "front",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",
