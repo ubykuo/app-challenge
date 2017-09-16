@@ -1,0 +1,26 @@
+{
+  "name": "app-challenge",
+  "version": "1.0.0",
+  "description": "Test for the app-challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ubykuo/app-challenge.git"
+  },
+  "keywords": [
+    "app",
+    "challenge"
+  ],
+  "author": "ubykuo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ubykuo/app-challenge/issues"
+  },
+  "homepage": "https://github.com/ubykuo/app-challenge#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
