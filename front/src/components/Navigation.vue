@@ -25,10 +25,6 @@
     justify-content: space-between;
   }
 
-  router-link {
-    text-decoration: none !important;
-  }
-
   .search {
     color: $secondary;
   }

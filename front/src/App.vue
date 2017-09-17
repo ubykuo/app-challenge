@@ -26,6 +26,10 @@
     background-color: $background;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   * {
     font-family: 'Poppins', sans-serif;
     color: $font-primary-color;

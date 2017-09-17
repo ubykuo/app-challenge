@@ -32,7 +32,7 @@
 
   .player {
     position: fixed;
-    height: 80px;
+    height: $player-height;
     width: 100%;
     left: 0;
     bottom: 0;

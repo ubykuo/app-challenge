@@ -25,6 +25,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '~@/variables.scss';
+
   ul {
     width: 100%;
     padding: 0;
@@ -37,5 +39,6 @@
   .song-list {
     display: flex;
     flex-direction: row;
+    margin-bottom: $player-height + 20px;
   }
 </style>
