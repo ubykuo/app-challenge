@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <span>App Challenge</span>
+      <span class="main-title">Music Room</span>
     </header>
     <main>
       <router-view></router-view>
@@ -17,6 +17,8 @@
 
 <style lang="scss">
   @import '~@/variables.scss';
+  @import url('https://fonts.googleapis.com/css?family=Lobster');
+  @import url('https://fonts.googleapis.com/css?family=Poppins');
 
   body {
     margin: 0;
@@ -24,7 +26,12 @@
   }
 
   * {
+    font-family: 'Poppins', sans-serif;
     color: $font-primary-color;
+  }
+
+  ul {
+    list-style: none;
   }
 
   #app {
@@ -56,5 +63,11 @@
     font-weight: 400;
     box-sizing: border-box;
     padding-top: 16px;
+  }
+
+  .main-title {
+    font-family: 'Lobster', sans-serif;
+    color: $secondary;
+    font-size: 2em;
   }
 </style>

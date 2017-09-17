@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="song-list">
     <ul>
       <li v-for="data in songs">
         <song :detail="data"></song>
@@ -23,3 +23,19 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  ul {
+    width: 100%;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 15px;
+  }
+
+  .song-list {
+    display: flex;
+    flex-direction: row;
+  }
+</style>

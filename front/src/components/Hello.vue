@@ -15,7 +15,7 @@
         params: {
           client_id: 'da73848fd0704f87a74b4d5d88dc1642',
           response_type: 'code',
-          redirect_uri: 'http://localhost:8080/api/auth'
+          redirect_uri: 'http://localhost:8080/api/auth/'
         }
       }
     },
