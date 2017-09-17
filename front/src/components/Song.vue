@@ -7,6 +7,10 @@
       <h3>{{ detail.title }}</h3>
       <h4>{{ detail.album }}</h4>
     </div>
+
+    <div class="remove" @click="onRemove(detail.id)">
+      <i class="fa fa-2x fa-trash"></i>
+    </div>
   </div>
 </template>
 <script>
@@ -16,6 +20,11 @@
       detail: {
         type: Object,
         required: true
+      }
+    },
+    methods: {
+      onRemove (id) {
+        this.$socket.emit('remove', id)
       }
     }
   }
@@ -33,7 +42,8 @@
     flex-direction: row;
     align-items: center;
     background-color: $terciary;
-    padding: 10px;
+    padding: 5px 10px;
+    width: 100%;
   }
 
   .album-cover {
@@ -46,5 +56,10 @@
     text-align: left;
     padding-left: 20px;
     width: 100%;
+  }
+
+  .remove {
+    padding: 20px;
+    cursor: pointer;
   }
 </style>
