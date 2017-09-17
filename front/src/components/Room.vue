@@ -17,17 +17,21 @@
       <h3>SIGUIENTES</h3>
       <song-list :songs="songs"></song-list>
     </section>
+
+    <player :playing="playing"></player>
   </div>
 </template>
 
 <script>
   import SongList from './SongList'
+  import Player from './Player'
 
   export default {
     name: 'Room',
-    components: {SongList},
+    components: {SongList, Player},
     data () {
       return {
+        playing: true,
         songs: [
           {
             title: 'Song n 2',
@@ -71,7 +75,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    padding: 20px 0 60px 0;
+    padding: 20px 0 30px 0;
   }
 
   .info {
