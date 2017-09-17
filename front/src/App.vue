@@ -1,23 +1,24 @@
 <template>
   <div id="app">
-    <header>
-      <span class="main-title">Music Room</span>
-    </header>
+    <navigation></navigation>
     <main>
-      <router-view></router-view>
+      <transition>
+        <router-view></router-view>
+      </transition>
     </main>
   </div>
 </template>
 
 <script>
+  import Navigation from './components/Navigation'
   export default {
-    name: 'app'
+    name: 'app',
+    components: {Navigation}
   }
 </script>
 
 <style lang="scss">
   @import '~@/variables.scss';
-  @import url('https://fonts.googleapis.com/css?family=Lobster');
   @import url('https://fonts.googleapis.com/css?family=Poppins');
 
   body {
@@ -46,14 +47,6 @@
     margin-top: 40px;
   }
 
-  header {
-    margin: 0;
-    height: 56px;
-    padding: 0 16px 0 24px;
-    background-color: $primary;
-    color: #ffffff;
-  }
-
   header span {
     display: block;
     position: relative;
@@ -63,11 +56,5 @@
     font-weight: 400;
     box-sizing: border-box;
     padding-top: 16px;
-  }
-
-  .main-title {
-    font-family: 'Lobster', sans-serif;
-    color: $secondary;
-    font-size: 2em;
   }
 </style>
