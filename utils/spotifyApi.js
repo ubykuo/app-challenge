@@ -6,5 +6,5 @@ module.exports = function () {
     return new SpotifyWebApi({
         clientId: spotifyConfig.client_id,
         clientSecret: spotifyConfig.client_secret,
-        redirectUri: spotifyConfig.spotify.redirect_uri})
+        redirectUri: spotifyConfig.redirect_uri})
 };

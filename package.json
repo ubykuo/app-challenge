@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Test for the app-challenge",
   "main": "index.js",
+  "engines": {
+    "node": "6.11.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,6 +28,7 @@
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
     "mongoose": "^4.11.11",
-    "spotify-web-api-node": "^2.5.0"
+    "spotify-web-api-node": "^2.5.0",
+    "socket.io": "^2.0.3"
   }
 }

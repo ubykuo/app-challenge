@@ -1,54 +1,64 @@
 <template>
   <div id="app">
-    <header>
-      <span>Vue.js PWA</span>
-    </header>
+    <navigation></navigation>
     <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
-      <router-view></router-view>
+      <transition>
+        <router-view></router-view>
+      </transition>
     </main>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-};
+  import Navigation from './components/Navigation'
+  export default {
+    name: 'app',
+    components: {Navigation}
+  }
 </script>
 
-<style>
-body {
-  margin: 0;
-}
+<style lang="scss">
+  @import '~@/variables.scss';
+  @import url('https://fonts.googleapis.com/css?family=Poppins');
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+  body {
+    margin: 0;
+    background-color: $background;
+  }
 
-main {
-  text-align: center;
-  margin-top: 40px;
-}
+  a {
+    text-decoration: none;
+  }
 
-header {
-  margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495E;
-  color: #ffffff;
-}
+  * {
+    font-family: 'Poppins', sans-serif;
+    color: $font-primary-color;
+  }
 
-header span {
-  display: block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
-}
+  ul {
+    list-style: none;
+  }
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+  }
+
+  main {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  header span {
+    display: block;
+    position: relative;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: .02em;
+    font-weight: 400;
+    box-sizing: border-box;
+    padding-top: 16px;
+  }
 </style>
