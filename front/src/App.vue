@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <navigation></navigation>
     <main>
       <transition>
         <router-view></router-view>
@@ -11,9 +10,16 @@
 
 <script>
   import Navigation from './components/Navigation'
+  import makeId from './utils/makeId'
+
   export default {
     name: 'app',
-    components: {Navigation}
+    components: {Navigation},
+    created () {
+      if (!this.$session.exists('sessid')) {
+        this.$session.set('sessid', makeId())
+      }
+    }
   }
 </script>
 
@@ -39,16 +45,8 @@
     list-style: none;
   }
 
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-  }
-
   main {
     text-align: center;
-    margin-top: 40px;
   }
 
   header span {

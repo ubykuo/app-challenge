@@ -10,14 +10,19 @@
     </div>
 
     <div class="actions">
-      <span class="votes">{{ detail.votes }}</span>
+      <span class="votes">{{ totalVotes }}</span>
 
       <div v-if="isHost" class="action" @click="onRemove(detail.id)">
         <i class="fa fa-2x fa-trash"></i>
       </div>
 
-      <div v-if="!isHost" class="action" @click="onLink(detail.id)">
+      <div v-else-if="!hasVoted" class="action"
+           @click="onVote(detail.id)">
         <i class="fa fa-2x fa-thumbs-up"></i>
+      </div>
+
+      <div v-else class="action">
+        <i class="fa fa-2x fa-check"></i>
       </div>
     </div>
   </div>
@@ -35,12 +40,23 @@
         required: true
       }
     },
+    computed: {
+      totalVotes () {
+        return this.detail.votes.length
+      },
+      hasVoted () {
+        const sessid = this.$session.get('sessid')
+        return (this.detail.votes.find(vote => {
+          return vote.user === sessid
+        }) !== undefined)
+      }
+    },
     methods: {
       onRemove (id) {
         this.$socket.emit('remove', id)
       },
-      onLike (id) {
-
+      onVote (id) {
+        this.$emit('vote', id)
       }
     }
   }
@@ -58,12 +74,12 @@
     flex-direction: row;
     align-items: center;
     background-color: $terciary;
-    padding: 5px 10px;
     width: 100%;
   }
 
   .album-cover {
     height: fit-content;
+    padding-left: 10px;
   }
 
   .detail {

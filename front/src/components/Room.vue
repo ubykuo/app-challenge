@@ -1,5 +1,20 @@
 <template>
   <div class="room">
+    <navigation>
+      <div class="overlay">
+        <div class="header">
+          <div class="search-box">
+            <input @keyup="onKeyUp(query)" v-model="query"
+                   placeholder="Search for a song..."
+                   autofocus/>
+          </div>
+          <div @click="toggle">
+            <i class="fa fa-2x fa-times"></i>
+          </div>
+        </div>
+      </div>
+    </navigation>
+
     <h2>{{ username.toUpperCase() }}</h2>
 
     <section class="details">
@@ -26,35 +41,47 @@
 <script>
   import SongList from './SongList'
   import Player from './Player'
+  import Navigation from './Navigation'
 
   export default {
     name: 'Room',
-    components: {SongList, Player},
+    components: {SongList, Player, Navigation},
     data () {
       return {
         playing: true,
+        query: '',
         songs: [
           {
             title: 'Song n 2',
             artist: 'Roberto',
             album: 'Black Album',
-            votes: 4
+            votes: [{user: 'bFO0HaKhSn'}, {user: 'pepe'}, {user: 'carlitos'}]
           },
           {
             title: 'Song n 2',
             artist: 'Roberto',
             album: 'Black Album',
-            votes: 4
+            votes: [{user: 'pepe'}, {user: 'carlitos'}]
           },
           {
             title: 'Song n 2',
             artist: 'Roberto',
             album: 'Black Album',
-            votes: 4
+            votes: [{user: 'carlitos'}]
           }
         ],
         username: this.$route.params.username,
         isHost: false
+      }
+    },
+    created () {
+    },
+    methods: {
+      toggle () {
+        this.$emit('toggleNav')
+      },
+      onKeyUp (query) {
+        // Call the search endpoint
       }
     },
     socket: {
@@ -63,6 +90,7 @@
           this.songs = songs
         },
         connect () {
+          // Subscribe to the room
           this.$socket.emit('join', this.username)
         },
         removed (id) {
@@ -86,12 +114,14 @@
       padding: 0 5%;
     }
 
-    @media (min-width: 641px) {
+    @media (min-width: 641px) and (max-width: 1023px) {
       padding: 0 20vw;
     }
+
+    @media (min-width: 1024px) {
+      padding: 0 30vw;
+    }
   }
-
-
 
   .current-album {
     max-width: 50%;
@@ -103,6 +133,26 @@
     align-items: flex-start;
     justify-content: center;
     padding: 20px 0 30px 0;
+  }
+
+  .search-box {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input {
+    background-color: transparent;
+    border-style: none;
+    border-bottom: 2px solid white;
+    padding: 5px;
+    font-size: 1.3em;
   }
 
   .info {

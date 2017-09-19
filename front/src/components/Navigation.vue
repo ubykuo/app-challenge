@@ -1,13 +1,32 @@
 <template>
   <header>
     <router-link class="main-title" to="/">Music Room</router-link>
-    <i class="fa fa-search fa-2x search"></i>
+    <div class="search" @click="toggle">
+      <i class="fa fa-search fa-2x"></i>
+    </div>
+    <slot v-if="showNav"></slot>
   </header>
 </template>
 
 <script>
   export default {
-    name: 'Navigation'
+    name: 'Navigation',
+    data () {
+      return {
+        showNav: false
+      }
+    },
+    mounted () {
+      this.$on('toggleNav', () => {
+        debugger
+        this.toggle()
+      })
+    },
+    methods: {
+      toggle () {
+        this.showNav = !this.showNav
+      }
+    }
   }
 </script>
 
@@ -26,7 +45,19 @@
   }
 
   .search {
-    color: $secondary;
+    i {
+      color: $secondary;
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: $background;
+    opacity: 0.95;
+    top: 0;
+    left: 0;
   }
 
   .main-title {

@@ -1,8 +1,7 @@
 <template>
   <div class="player">
-    <span><i class="fa fa-2x fa-backward"></i></span>
     <span @click="togglePlay"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
-    <span><i class="fa fa-2x fa-forward"></i></span>
+    <span @click="forward()"><i class="fa fa-2x fa-forward"></i></span>
   </div>
 </template>
 
@@ -17,6 +16,7 @@
     methods: {
       togglePlay () {
         this.playing = !this.playing
+        this.$emit(this.playing ? 'play' : 'pause')
       }
     },
     computed: {

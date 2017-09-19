@@ -6,11 +6,11 @@ import router from './router'
 import VueResource from 'vue-resource'
 import VueAuthenticate from 'vue-authenticate'
 import VueWebsocket from 'vue-websocket'
+import VueSession from 'vue-session'
 
 Vue.use(VueResource)
-
-Vue.use(VueWebsocket, 'ws://192.168.0.22:3000')
-
+Vue.use(VueSession)
+Vue.use(VueWebsocket, 'ws://localhost:3000')
 Vue.use(VueAuthenticate, {
   baseUrl: 'https://accounts.spotify.com/authorize', // Your API domain
 
