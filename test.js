@@ -1,6 +1,6 @@
 const ioClient = require('socket.io-client');
 
-let socket = new ioClient("http://app-challenge.herokuapp.com");
+let socket = new ioClient("http://localhost:8080");
 
 socket.on('connect', function(){
   console.log("Me conecte al servidor");
