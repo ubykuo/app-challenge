@@ -1,10 +1,17 @@
-var mongoose = require('../dbConnection.js');
+"use strict";
+const mongoose = require('../dbConnection.js');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var RoomSchema = new Schema ({
+const RoomSchema = new Schema ({
 	name: String,
 	status: String,
+	owner: {
+		name: String,
+		spotify_id: String,
+		spotify_token: String,
+		spotify__refresh_token: String
+	},
 	songs: [{
 		title: String,
 		votes: [{user: String}],
@@ -13,6 +20,6 @@ var RoomSchema = new Schema ({
 	}]
 });
 
-var Room = mongoose.model('Room', RoomSchema);
+const Room = mongoose.model('Room', RoomSchema);
 
-modules.export = Room;
+module.exports = Room;

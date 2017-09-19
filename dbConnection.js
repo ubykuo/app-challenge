@@ -1,18 +1,14 @@
-var mongoose = require('mongoose');
+"use strict";
+const mongoose = require('mongoose');
 
-var mongoUrl = "mongodb://appc:v9cCrvEN@ds139994.mlab.com:39994/app-challenge";
+const mongoUrl = "mongodb://appc:v9cCrvEN@ds139994.mlab.com:39994/app-challenge";
 
 mongoose.Promise = require('bluebird');
 
 
 var connectWithRetry = function () {
-	return mongoose.connect(mongoUrl, function (err) {
-		if (err) {
-			console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
-			setTimeout(connectWithRetry,5000);
-		}
-	});
-}
+	return mongoose.connect(mongoUrl);
+};
 
 connectWithRetry();
 
