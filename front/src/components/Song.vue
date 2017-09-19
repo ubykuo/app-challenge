@@ -3,13 +3,22 @@
     <img src="https://i.scdn.co/image/54b3222c8aaa77890d1ac37b3aaaa1fc9ba630ae"
          class="album-cover"
          alt="Album cover">
+
     <div class="detail">
       <h3>{{ detail.title }}</h3>
       <h4>{{ detail.album }}</h4>
     </div>
 
-    <div class="remove" @click="onRemove(detail.id)">
-      <i class="fa fa-2x fa-trash"></i>
+    <div class="actions">
+      <span class="votes">{{ detail.votes }}</span>
+
+      <div v-if="isHost" class="action" @click="onRemove(detail.id)">
+        <i class="fa fa-2x fa-trash"></i>
+      </div>
+
+      <div v-if="!isHost" class="action" @click="onLink(detail.id)">
+        <i class="fa fa-2x fa-thumbs-up"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -20,11 +29,18 @@
       detail: {
         type: Object,
         required: true
+      },
+      isHost: {
+        type: Boolean,
+        required: true
       }
     },
     methods: {
       onRemove (id) {
         this.$socket.emit('remove', id)
+      },
+      onLike (id) {
+
       }
     }
   }
@@ -58,7 +74,16 @@
     width: 100%;
   }
 
-  .remove {
+  .actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .votes {
+    font-weight: bold;
+  }
+
+  .action {
     padding: 20px;
     cursor: pointer;
   }

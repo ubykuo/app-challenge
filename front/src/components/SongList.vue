@@ -2,7 +2,7 @@
   <div class="song-list">
     <ul>
       <li v-for="data in songs">
-        <song :detail="data"></song>
+        <song :detail="data" :is-host="isHost"></song>
       </li>
     </ul>
   </div>
@@ -16,6 +16,10 @@
     props: {
       songs: {
         type: Array,
+        required: true
+      },
+      isHost: {
+        type: Boolean,
         required: true
       }
     },

@@ -16,10 +16,10 @@
     </section>
     <section class="songs">
       <h3>SIGUIENTES</h3>
-      <song-list :songs="songs"></song-list>
+      <song-list :songs="songs" :is-host="isHost"></song-list>
     </section>
 
-    <player :playing="playing"></player>
+    <player v-if="isHost" :playing="playing"></player>
   </div>
 </template>
 
@@ -53,7 +53,8 @@
             votes: 4
           }
         ],
-        username: this.$route.params.username
+        username: this.$route.params.username,
+        isHost: false
       }
     },
     socket: {
@@ -81,12 +82,16 @@
   }
 
   .room {
-    padding: 0 5%;
+    @media (max-width: 640px) {
+      padding: 0 5%;
+    }
+
+    @media (min-width: 641px) {
+      padding: 0 20vw;
+    }
   }
 
-  @media (min-width: 641px) {
-    padding: 0 15%;
-  }
+
 
   .current-album {
     max-width: 50%;
