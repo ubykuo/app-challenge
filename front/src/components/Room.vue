@@ -61,6 +61,10 @@
       }
     },
     created: function () {
+      if (!this.$localStorage.get('username') && this.isHost) {
+        this.$localStorage.set('username', this.username)
+      }
+
       this.$http.get(`/api/room/${this.username}`).then(
         (res) => {
           console.log('entro a la peticion', res)

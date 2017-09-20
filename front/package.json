@@ -13,6 +13,7 @@
   "dependencies": {
     "client-oauth2": "^4.1.0",
     "node-sass": "^4.5.3",
+    "randomcolor": "^0.5.3",
     "vue": "^2.3.3",
     "vue-authenticate": "^1.2.7",
     "vue-localstorage": "^0.4.2",
