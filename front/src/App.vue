@@ -16,9 +16,10 @@
     name: 'app',
     components: {Navigation},
     created () {
-      if (!this.$session.exists('sessid')) {
-        this.$session.set('sessid', makeId())
+      if (!this.$localStorage.get('id')) {
+        this.$localStorage.set('id', makeId())
       }
+      console.info(this.$localStorage.get('id'))
     }
   }
 </script>

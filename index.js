@@ -20,63 +20,43 @@ let playlist = [
     title: 'Song n 2',
     artist: 'Roberto',
     album: 'Black Album',
-    votes: 4
+    votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
   },
   {
     id: 2,
     title: 'Song n 2',
     artist: 'Roberto',
     album: 'Black Album',
-    votes: 4
+    votes: [{user: 'pepe'}, {user: 'carlitos'}, {user: 'juan'}]
   },
   {
     id: 3,
     title: 'Go crasdazy',
     artist: 'Roberto',
     album: 'Black Album',
-    votes: 4
+    votes: [{user: 'pepe'}, {user: 'carlitos'}, {user: 'juan'}]
+
   },
   {
     id: 4,
     title: 'Go crasdazy',
     artist: 'Roberto',
     album: 'Black Album',
-    votes: 4
+    votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
   },
   {
     id: 5,
     title: 'Go crasdazy',
     artist: 'Roberto',
     album: 'Black Album',
-    votes: 4
+    votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
   },
   {
     id: 6,
     title: 'Go crasdazy',
     artist: 'Roberto',
     album: 'Black Album',
-    votes: 4
-  },
-  {
-    id: 7,
-    title: 'Go crasdazy',
-    artist: 'Roberto',
-    album: 'Black Album',
-    votes: 4
-  },
-  {
-    id: 8,
-    title: 'Go crasdazy',
-    artist: 'Roberto',
-    album: 'Black Album',
-    votes: 4
-  },
-  {
-    id: 9,
-    title: 'Go crasdazy',
-    artist: 'Roberto',
-    album: 'Black Album',
-    votes: 4
+    votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
   }
 ];
 

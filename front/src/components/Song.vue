@@ -45,9 +45,9 @@
         return this.detail.votes.length
       },
       hasVoted () {
-        const sessid = this.$session.get('sessid')
+        const id = this.$localStorage.get('id')
         return (this.detail.votes.find(vote => {
-          return vote.user === sessid
+          return vote.user === id
         }) !== undefined)
       }
     },

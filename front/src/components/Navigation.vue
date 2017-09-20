@@ -1,10 +1,21 @@
 <template>
   <header>
     <router-link class="main-title" to="/">Music Room</router-link>
-    <div class="search" @click="toggle">
+    <div class="search toggle" @click="toggle">
       <i class="fa fa-search fa-2x"></i>
     </div>
-    <slot v-if="showNav"></slot>
+    <div :class="{visible: showNav}" class="overlay">
+      <div class="header">
+        <div class="search-box">
+          <input @keyup="onSearch(query)" v-model="query"
+                 placeholder="Search for a song..."
+                 autofocus />
+        </div>
+        <div @click="toggle" class=" toggle">
+          <i class="fa fa-2x fa-times"></i>
+        </div>
+      </div>
+    </div>
   </header>
 </template>
 
@@ -13,14 +24,15 @@
     name: 'Navigation',
     data () {
       return {
-        showNav: false
+        showNav: false,
+        query: ''
       }
     },
-    mounted () {
-      this.$on('toggleNav', () => {
-        debugger
-        this.toggle()
-      })
+    props: {
+      onSearch: {
+        type: Function,
+        required: false
+      }
     },
     methods: {
       toggle () {
@@ -44,25 +56,56 @@
     justify-content: space-between;
   }
 
-  .search {
-    i {
-      color: $secondary;
-    }
-  }
-
   .overlay {
     position: absolute;
     width: 100vw;
     height: 100vh;
     background-color: $background;
-    opacity: 0.95;
     top: 0;
     left: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s;
+
+    &.visible {
+      opacity: 0.95;
+      visibility: visible;
+    }
   }
 
   .main-title {
     font-family: 'Lobster', sans-serif;
     color: $secondary;
     font-size: 2em;
+  }
+
+  .search-box {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle {
+    cursor: pointer;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input {
+    background-color: transparent;
+    border-style: none;
+    border-bottom: 2px solid white;
+    padding: 5px;
+    font-size: 1.3em;
+  }
+
+  .search {
+    i {
+      color: $secondary;
+    }
   }
 </style>
