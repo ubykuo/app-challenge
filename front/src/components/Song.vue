@@ -10,19 +10,21 @@
     </div>
 
     <div class="actions">
-      <span class="votes">{{ totalVotes }}</span>
+      <div v-if="isPlaylist">
+        <span class="votes">{{ totalVotes }}</span>
 
-      <div v-if="isHost" class="action" @click="onRemove(detail.id)">
-        <i class="fa fa-2x fa-trash"></i>
-      </div>
+        <div v-if="isHost" class="action" @click="onRemove(detail.id)">
+          <i class="fa fa-2x fa-trash"></i>
+        </div>
 
-      <div v-else-if="!hasVoted" class="action"
-           @click="onVote(detail.id)">
-        <i class="fa fa-2x fa-thumbs-up"></i>
-      </div>
+        <div v-else-if="!hasVoted" class="action"
+             @click="onVote(detail.id)">
+          <i class="fa fa-2x fa-thumbs-up"></i>
+        </div>
 
-      <div v-else class="action">
-        <i class="fa fa-2x fa-check"></i>
+        <div v-else class="action">
+          <i class="fa fa-2x fa-check"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -38,6 +40,10 @@
       isHost: {
         type: Boolean,
         required: true
+      },
+      isPlaylist: {
+        type: Boolean,
+        required: true
       }
     },
     computed: {
@@ -45,9 +51,9 @@
         return this.detail.votes.length
       },
       hasVoted () {
-        const sessid = this.$session.get('sessid')
+        const id = this.$localStorage.get('id')
         return (this.detail.votes.find(vote => {
-          return vote.user === sessid
+          return vote.user === id
         }) !== undefined)
       }
     },

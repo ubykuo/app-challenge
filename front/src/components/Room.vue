@@ -1,19 +1,6 @@
 <template>
   <div class="room">
-    <navigation>
-      <div class="overlay">
-        <div class="header">
-          <div class="search-box">
-            <input @keyup="onKeyUp(query)" v-model="query"
-                   placeholder="Search for a song..."
-                   autofocus/>
-          </div>
-          <div @click="toggle">
-            <i class="fa fa-2x fa-times"></i>
-          </div>
-        </div>
-      </div>
-    </navigation>
+    <navigation :on-search="onKeyUp"></navigation>
 
     <h2>{{ username.toUpperCase() }}</h2>
 
@@ -49,13 +36,12 @@
     data () {
       return {
         playing: true,
-        query: '',
         songs: [
           {
             title: 'Song n 2',
             artist: 'Roberto',
             album: 'Black Album',
-            votes: [{user: 'bFO0HaKhSn'}, {user: 'pepe'}, {user: 'carlitos'}]
+            votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
           },
           {
             title: 'Song n 2',
@@ -74,14 +60,27 @@
         isHost: false
       }
     },
-    created () {
+    created: function () {
+      this.$http.get(`/api/room/${this.username}`).then(
+        (res) => {
+          console.log('entro a la peticion', res)
+          /*
+          this.songs = res.songs
+          this.isHost = res.isHost
+          */
+        }
+      )
     },
     methods: {
-      toggle () {
-        this.$emit('toggleNav')
+      toggleNav () {
+        console.log('emiting toggleNav')
+        this.$emit('toggle-nav', {})
       },
       onKeyUp (query) {
-        // Call the search endpoint
+        console.info('it worked')
+        if (query.length > 3) {
+          // Call the search endpoint
+        }
       }
     },
     socket: {
@@ -133,26 +132,6 @@
     align-items: flex-start;
     justify-content: center;
     padding: 20px 0 30px 0;
-  }
-
-  .search-box {
-    padding: 15px;
-    display: flex;
-    align-items: center;
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  input {
-    background-color: transparent;
-    border-style: none;
-    border-bottom: 2px solid white;
-    padding: 5px;
-    font-size: 1.3em;
   }
 
   .info {
