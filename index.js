@@ -114,6 +114,8 @@ app.set('port', config.port);
 app.use('/api/auth', auth);
 app.use('/api/room', room);
 
+app.use('/api/room', room);
+
 
 //Frontend routes
 app.use('/', express.static(__dirname + '/front/dist'));

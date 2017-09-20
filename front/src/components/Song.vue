@@ -9,22 +9,25 @@
       <h4>{{ detail.album }}</h4>
     </div>
 
-    <div class="actions">
-      <div v-if="isPlaylist">
-        <span class="votes">{{ totalVotes }}</span>
+    <div class="actions" v-if="isPlaylist">
+      <span class="votes">{{ totalVotes }}</span>
 
-        <div v-if="isHost" class="action" @click="onRemove(detail.id)">
-          <i class="fa fa-2x fa-trash"></i>
-        </div>
+      <div v-if="isHost" class="action" @click="onRemove(detail.id)">
+        <i class="fa fa-2x fa-trash"></i>
+      </div>
 
-        <div v-else-if="!hasVoted" class="action"
-             @click="onVote(detail.id)">
-          <i class="fa fa-2x fa-thumbs-up"></i>
-        </div>
-
-        <div v-else class="action">
-          <i class="fa fa-2x fa-check"></i>
-        </div>
+      <div v-else-if="!hasVoted" class="action"
+           @click="onVote(detail.id)">
+        <i class="fa fa-2x fa-thumbs-up"></i>
+      </div>
+      <div v-else class="action">
+        <i class="fa fa-2x fa-check"></i>
+      </div>
+    </div>
+    <div v-else class="actions">
+      <div class="action"
+           @click="addToPlaylist(detail.id)">
+        <i class="fa fa-2x fa-plus"></i>
       </div>
     </div>
   </div>
@@ -62,7 +65,13 @@
         this.$socket.emit('remove', id)
       },
       onVote (id) {
-        this.$emit('vote', id)
+        this.$emit('vote', {
+          user: this.$localStorage.get('id'),
+          id
+        })
+      },
+      addToPlaylist (id) {
+        console.log(id)
       }
     }
   }
@@ -92,7 +101,7 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    padding-left: 20px;
+    padding: 0 20px;
     width: 100%;
   }
 

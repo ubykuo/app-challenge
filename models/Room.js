@@ -10,7 +10,8 @@ const RoomSchema = new Schema ({
 		name: String,
 		spotify_id: String,
 		spotify_token: String,
-		spotify__refresh_token: String
+		spotify__refresh_token: String,
+		image: String,
 	},
 	songs: [{
 		title: String,

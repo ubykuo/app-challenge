@@ -16,24 +16,43 @@
         </div>
       </div>
       <div class="results">
-        <ul>
-          <li>Resultado 1</li>
-          <li>Resultado 2</li>
-          <li>Resultado 3</li>
-          <li>Resultado 4</li>
-        </ul>
+        <h2>Resultado de la busqueda</h2>
+        <song-list :songs="songs" :isHost="false" :isPlaylist="false"></song-list>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+  import SongList from './SongList.vue'
+
   export default {
+    components: {SongList},
     name: 'Navigation',
     data () {
       return {
         showNav: false,
-        query: ''
+        query: '',
+        songs: [
+          {
+            title: 'Song n 2',
+            artist: 'Roberto',
+            album: 'Black Album',
+            votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
+          },
+          {
+            title: 'Song n 2',
+            artist: 'Roberto',
+            album: 'Black Album',
+            votes: [{user: 'pepe'}, {user: 'carlitos'}]
+          },
+          {
+            title: 'Song n 2',
+            artist: 'Roberto',
+            album: 'Black Album',
+            votes: [{user: 'carlitos'}]
+          }
+        ]
       }
     },
     props: {
@@ -118,13 +137,10 @@
   }
 
   .results {
-    width: 80%;
+    width: 60%;
     margin: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    li {
-      display: block;
-    }
   }
 </style>

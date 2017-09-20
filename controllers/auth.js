@@ -22,6 +22,7 @@ controller.auth = function (req, res) {
                             "owner.name": user.body.display_name,
                             "owner.spotify_token": spotifyClient.getAccessToken(),
                             "owner.spotify__refresh_token": spotifyClient.getRefreshToken(),
+                            "owner.image":user.body.images.url,
                             "songs": []
                         }
                 },

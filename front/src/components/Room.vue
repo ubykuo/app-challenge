@@ -18,7 +18,7 @@
     </section>
     <section class="songs">
       <h3>SIGUIENTES</h3>
-      <song-list :songs="songs" :is-host="isHost"></song-list>
+      <song-list :songs="songs" :is-host="isHost" :is-playlist="true"></song-list>
     </section>
 
     <player v-if="isHost" :playing="playing"></player>
@@ -61,6 +61,10 @@
       }
     },
     created: function () {
+      if (!this.$localStorage.get('username') && this.isHost) {
+        this.$localStorage.set('username', this.username)
+      }
+
       this.$http.get(`/api/room/${this.username}`).then(
         (res) => {
           console.log('entro a la peticion', res)
