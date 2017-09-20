@@ -29,9 +29,13 @@ controller.auth = function (req, res) {
             );
 
         })
-        .then(room => res.redirect("/room/" + room.owner.spotify_id) )
+        .then(room =>{
+
+            req.session.spotify_id = room.owner.spotify_id;
+            res.redirect("/room/" + room.owner.spotify_id);
+        })
         .catch((error) => {
-            console.log("ERROR__", error, error.stack)
+            console.log("ERROR__", error, error.stack);
             res.status(500).send();
         })
 

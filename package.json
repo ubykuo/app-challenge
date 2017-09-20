@@ -27,9 +27,10 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
+    "express-session": "^1.15.5",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.11",
-    "spotify-web-api-node": "^2.5.0",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "spotify-web-api-node": "^2.5.0"
   }
 }
