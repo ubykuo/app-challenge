@@ -5,6 +5,7 @@ const _ = require('lodash');
 
 const config = require(__dirname + '/config');
 const auth = require(__dirname + '/routes/auth');
+const room = require(__dirname + '/routes/room');
 
 const app = express();
 
@@ -122,6 +123,8 @@ app.set('port', config.port);
 
 //Backend routes
 app.use('/api/auth', auth);
+
+app.use('/api/room', room);
 
 
 //Frontend routes
