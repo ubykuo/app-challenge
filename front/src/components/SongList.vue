@@ -2,7 +2,7 @@
   <div class="song-list">
     <ul>
       <li v-for="data in songs">
-        <song :detail="data" :is-host="isHost" :is-playlist="true"></song>
+        <song :detail="data" :is-host="isHost" :is-playlist="isPlaylist"></song>
       </li>
     </ul>
   </div>
@@ -19,6 +19,10 @@
         required: true
       },
       isHost: {
+        type: Boolean,
+        required: true
+      },
+      isPlaylist: {
         type: Boolean,
         required: true
       }
@@ -44,5 +48,6 @@
     display: flex;
     flex-direction: row;
     margin-bottom: $player-height + 20px;
+    width: 100%;
   }
 </style>

@@ -18,7 +18,7 @@
     </section>
     <section class="songs">
       <h3>SIGUIENTES</h3>
-      <song-list :songs="songs" :is-host="isHost"></song-list>
+      <song-list :songs="songs" :is-host="isHost" :is-playlist="true"></song-list>
     </section>
 
     <player v-if="isHost" :playing="playing"></player>

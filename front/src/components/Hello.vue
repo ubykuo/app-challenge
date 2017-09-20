@@ -68,7 +68,7 @@
     },
     computed: {
       authLink () {
-        return `${this.url_base}?client_id=${this.params.client_id}&response_type=${this.params.response_type}&redirect_uri=${this.params.redirect_uri}&scopes=${this.params.scopes}`
+        return `${this.url_base}?client_id=${this.params.client_id}&response_type=${this.params.response_type}&redirect_uri=${this.params.redirect_uri}&scope=${this.params.scopes}`
       }
     }
   }
