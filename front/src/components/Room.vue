@@ -60,6 +60,17 @@
         isHost: false
       }
     },
+    created: function () {
+      this.$http.get(`/api/room/${this.username}`).then(
+        (res) => {
+          console.log('entro a la peticion', res)
+          /*
+          this.songs = res.songs
+          this.isHost = res.isHost
+          */
+        }
+      )
+    },
     methods: {
       toggleNav () {
         console.log('emiting toggleNav')
@@ -122,8 +133,6 @@
     justify-content: center;
     padding: 20px 0 30px 0;
   }
-
-
 
   .info {
     text-align: left;

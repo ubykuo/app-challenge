@@ -15,6 +15,14 @@
           <i class="fa fa-2x fa-times"></i>
         </div>
       </div>
+      <div class="results">
+        <ul>
+          <li>Resultado 1</li>
+          <li>Resultado 2</li>
+          <li>Resultado 3</li>
+          <li>Resultado 4</li>
+        </ul>
+      </div>
     </div>
   </header>
 </template>
@@ -106,6 +114,17 @@
   .search {
     i {
       color: $secondary;
+    }
+  }
+
+  .results {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    li {
+      display: block;
     }
   }
 </style>

@@ -2,7 +2,7 @@
   <div class="song-list">
     <ul>
       <li v-for="data in songs">
-        <song :detail="data" :is-host="isHost"></song>
+        <song :detail="data" :is-host="isHost" :is-playlist="true"></song>
       </li>
     </ul>
   </div>
