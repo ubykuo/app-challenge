@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const RoomSchema = new Schema ({
 	name: String,
 	status: String,
+	playlist_id: String,
 	owner: {
 		name: String,
 		spotify_id: String,
