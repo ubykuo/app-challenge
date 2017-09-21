@@ -1,10 +1,13 @@
 <template>
   <div class="song-list">
-    <ul>
+    <ul v-if="songs.length > 0">
       <li v-for="data in songs">
         <song :detail="data" :is-host="isHost" :is-playlist="isPlaylist"></song>
       </li>
     </ul>
+    <div v-else class="no-songs">
+      There are no songs
+    </div>
   </div>
 </template>
 <script>
@@ -24,7 +27,8 @@
       },
       isPlaylist: {
         type: Boolean,
-        required: true
+        required: false,
+        default: true
       }
     },
     created () {
@@ -49,5 +53,13 @@
     flex-direction: row;
     margin-bottom: $player-height + 20px;
     width: 100%;
+  }
+
+  .no-songs {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10vh;
   }
 </style>
