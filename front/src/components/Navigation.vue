@@ -32,34 +32,15 @@
     data () {
       return {
         showNav: false,
-        query: '',
-        songs: [
-          {
-            title: 'Song n 2',
-            artist: 'Roberto',
-            album: 'Black Album',
-            votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
-          },
-          {
-            title: 'Song n 2',
-            artist: 'Roberto',
-            album: 'Black Album',
-            votes: [{user: 'pepe'}, {user: 'carlitos'}]
-          },
-          {
-            title: 'Song n 2',
-            artist: 'Roberto',
-            album: 'Black Album',
-            votes: [{user: 'carlitos'}]
-          }
-        ]
+        query: ''
       }
     },
     props: {
       onSearch: {
         type: Function,
         required: false
-      }
+      },
+      songs: []
     },
     methods: {
       toggle () {
@@ -85,17 +66,16 @@
 
   .overlay {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-color: $background;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(6,3,44,0);
     top: 0;
     left: 0;
     visibility: hidden;
-    opacity: 0;
     transition: all .3s;
 
     &.visible {
-      opacity: 0.95;
+      background-color: rgba(6,3,44,0.95);
       visibility: visible;
     }
   }

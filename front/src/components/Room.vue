@@ -1,6 +1,6 @@
 <template>
   <div class="room">
-    <navigation :on-search="onKeyUp"></navigation>
+    <navigation :on-search="onKeyUp" :songs="results"></navigation>
 
     <h2>{{ username.toUpperCase() }}</h2>
 
@@ -56,6 +56,7 @@
             votes: [{user: 'carlitos'}]
           }
         ],
+        results: [],
         username: this.$route.params.username,
         isHost: false
       }
@@ -67,11 +68,11 @@
 
       this.$http.get(`/api/room/${this.username}`).then(
         (res) => {
-          console.log('entro a la peticion', res)
-          /*
-          this.songs = res.songs
-          this.isHost = res.isHost
-          */
+          console.log('entro a la peticion', res.data)
+          this.songs = res.data.songs
+          this.isHost = res.data.isHost
+          this.playing = res.data.isPlaying
+          console.log(this.isHost, this.playing)
         }
       )
     },
@@ -83,7 +84,13 @@
       onKeyUp (query) {
         console.info('it worked')
         if (query.length > 3) {
-          // Call the search endpoint
+          this.$http.get(`/api/room/${this.username}/searchSong?q=${query}`).then(
+            (res) => {
+              console.log('entro a la peticion', res.data)
+              this.results = res.data
+              console.log('resultado', this.results)
+            }
+          )
         }
       }
     },
