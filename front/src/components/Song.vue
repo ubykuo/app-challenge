@@ -1,12 +1,13 @@
 <template>
   <div class="song">
-    <img src="https://i.scdn.co/image/54b3222c8aaa77890d1ac37b3aaaa1fc9ba630ae"
+    <img :src="detail.album.images[1].url"
          class="album-cover"
          alt="Album cover">
 
     <div class="detail">
-      <h3>{{ detail.title }}</h3>
-      <h4>{{ detail.album }}</h4>
+      <h3>{{ detail.name }}</h3>
+      <h4>{{ detail.album.name }}</h4>
+      <h5>{{ detail.artists[0].name }}</h5>
     </div>
 
     <div class="actions" v-if="isPlaylist">
@@ -80,8 +81,12 @@
 <style lang="scss" scoped>
   @import '~@/variables.scss';
 
-  h1, h2, h3, h4, p {
+  h1, h2, h3, p {
     margin: 8px 0;
+  }
+
+  h4, h5 {
+    margin: 2px 0;
   }
 
   .song {
@@ -117,5 +122,10 @@
   .action {
     padding: 20px;
     cursor: pointer;
+  }
+
+  img {
+    max-width: 80px;
+    max-height: 80px;
   }
 </style>
