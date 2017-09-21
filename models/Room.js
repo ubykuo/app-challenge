@@ -18,7 +18,8 @@ const RoomSchema = new Schema ({
 		title: String,
 		votes: [{user: String}],
 		spotify_id: String,
-		artist: String
+		artist: String,
+        spotify_uri: String
 	}]
 });
 

@@ -1,75 +1,54 @@
 const _ = require('lodash');
-
+const wsHelper = require(__dirname + '/utils/webSocket');
+const room = require(__dirname + '/models/Room');
 let clientsConnected = 0;
 
-let playlist = [
-    {
-        id: 1,
-        title: 'Song n 2',
-        artist: 'Roberto',
-        album: 'Black Album',
-        votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
-    },
-    {
-        id: 2,
-        title: 'Song n 2',
-        artist: 'Roberto',
-        album: 'Black Album',
-        votes: [{user: 'pepe'}, {user: 'carlitos'}, {user: 'juan'}]
-    },
-    {
-        id: 3,
-        title: 'Go crasdazy',
-        artist: 'Roberto',
-        album: 'Black Album',
-        votes: [{user: 'pepe'}, {user: 'carlitos'}, {user: 'juan'}]
 
-    },
-    {
-        id: 4,
-        title: 'Go crasdazy',
-        artist: 'Roberto',
-        album: 'Black Album',
-        votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
-    },
-    {
-        id: 5,
-        title: 'Go crasdazy',
-        artist: 'Roberto',
-        album: 'Black Album',
-        votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
-    },
-    {
-        id: 6,
-        title: 'Go crasdazy',
-        artist: 'Roberto',
-        album: 'Black Album',
-        votes: [{user: 'iqNk8OspZw'}, {user: 'pepe'}, {user: 'carlitos'}]
-    }
-];
-
+//TODO no usar la bd de mongo todo el tiempo , ¿usar redis???. Muchos updates
 const socketSync = {
-    init : function (io) {
+    init: function (io) {
+
         io.on('connection', function (client) {
+
+
             clientsConnected = clientsConnected + 1;
+
             console.log("Clientes conectados: ", clientsConnected);
 
             client.on("join", function (roomId) {
                 console.log('New client in ' + roomId);
-                client.join("room-" + roomId);
-                io.sockets.in("room-" + roomId).emit('playlist', playlist);
-                console.log(client);
+                room.findOne({"owner.spotify_id": roomId})
+
+                    .then((room) => {
+
+                        client.join("room-" + roomId);
+
+                        client.emit('playlist', room.songs);
+
+                    });
             });
 
-            client.on("remove", function (trackId) {
-                _.remove(playlist, {
-                    id: trackId
-                });
-                io.emit("removed", trackId);
+            client.on("addSong", function (roomId, song) {
+                room.findOne({"owner.spotify_id": roomId})
+                    .then((room) => {
+                        room.songs.push(song);
+                        io.in("room-" + roomId).emit('playlist', room.songs);
+                        room.save();
+                    });
+
             });
 
-            client.on("add", function (text) {
-                console.log(text);
+            client.on("addSongToPlaylist", (roomId) => {
+                let songs;//no esta bueno tener esto como global
+                room.findOne({"owner.spotify_id": roomId})
+                    .then(room => {
+                        //ASUMO QUE LA CANCION ESTA
+                        let song  = _.first(room.songs);
+                        songs = room.songs;
+                        wsHelper.addSongToPlaylist(song, roomId, io);
+                    })
+                    .then((data) => io.in("room-" + roomId).emit('playlist', songs));
+
             });
 
             client.on('disconnect', function () {
