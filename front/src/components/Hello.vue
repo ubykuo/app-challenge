@@ -52,8 +52,9 @@
     },
     components: {Navigation, RoomList},
     created () {
-      this.$http.get('/api/room/').then(response => {
-        this.rooms = response.rooms
+      this.$http.get('/api/room').then(response => {
+        this.rooms = response.data
+        console.log(response.data, this.rooms)
       })
     },
     methods: {

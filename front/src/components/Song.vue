@@ -18,7 +18,7 @@
       </div>
 
       <div v-else-if="!hasVoted" class="action"
-           @click="onVote(detail.id)">
+           @click="onVote(detail)">
         <i class="fa fa-2x fa-thumbs-up"></i>
       </div>
       <div v-else class="action">
@@ -27,7 +27,7 @@
     </div>
     <div v-else class="actions">
       <div class="action"
-           @click="addToPlaylist(detail.id)">
+           @click="addToPlaylist(detail)">
         <i class="fa fa-2x fa-plus"></i>
       </div>
     </div>
@@ -65,14 +65,19 @@
       onRemove (id) {
         this.$socket.emit('remove', id)
       },
-      onVote (id) {
+      onVote (song) {
+        /* aca no tendria que ser al socket?
+         this.$socket.emit('vote', { uri: song.uri, id: song.id })
+        */
         this.$emit('vote', {
           user: this.$localStorage.get('id'),
-          id
+          id: song.id
         })
       },
-      addToPlaylist (id) {
-        console.log(id)
+      addToPlaylist (song) {
+        /* pasar el atributo songs.uri */
+        this.$socket.emit('addSong', song)
+        console.log(song.id, song.uri)
       }
     }
   }

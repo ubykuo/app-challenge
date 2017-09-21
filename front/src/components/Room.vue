@@ -21,7 +21,7 @@
       <song-list :songs="songs" :is-host="isHost" :is-playlist="true"></song-list>
     </section>
 
-    <player v-if="isHost" :playing="playing"></player>
+    <player v-if="isHost" :playing="playing" :room="username"></player>
   </div>
 </template>
 
@@ -91,6 +91,8 @@
               console.log('resultado', this.results)
             }
           )
+        } else if (query.length === 0) {
+          this.results = []
         }
       }
     },
