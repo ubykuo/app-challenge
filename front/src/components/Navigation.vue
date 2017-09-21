@@ -16,8 +16,12 @@
         </div>
       </div>
       <div class="results">
-        <h2>Resultado de la busqueda</h2>
-        <song-list :songs="songs" :isHost="false" :isPlaylist="false"></song-list>
+        <h2>Search results</h2>
+        <song-list
+          :songs="songs"
+          :is-host="false"
+          :is-playlist="false">
+        </song-list>
       </div>
     </div>
   </header>
