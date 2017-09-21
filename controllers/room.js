@@ -23,7 +23,6 @@ controller.get = function (req, res) {
             let response = {};
             response.songs = room.songs;
             response.isHost = false;
-
             if (req.hasOwnProperty('session') && req.session.hasOwnProperty("spotify_id")) {
                 response.isHost = (req.session.spotify_id === room.owner.spotify_id);
             }
@@ -43,5 +42,26 @@ controller.getRooms = function (req, res) {
             res.json(result);
         });
 };
+
+controller.searchSong = function (req, res) {
+    let roomId = req.params.roomId;
+    let songName = req.query.q;
+    Room.findOne({"owner.spotify_id": roomId})
+        .then((room) => {
+            let spotifyClient = new SpotifyApi();
+
+            spotifyClient.setAccessToken(room.owner.spotify_token);
+            spotifyClient.setRefreshToken(room.owner.spotify__refresh_token);
+
+            return spotifyClient.searchTracks(songName);
+
+        })
+        .then((responseSongData) => {
+            res.send(responseSongData.body.tracks.items);
+        });
+
+
+};
+
 
 module.exports = controller;

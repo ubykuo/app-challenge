@@ -1,3 +1,4 @@
+"use strict";
 const ioClient = require('socket.io-client');
 
 let socket = new ioClient("http://localhost:8080");
