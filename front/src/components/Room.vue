@@ -1,28 +1,28 @@
 <template>
-  <div class="room">
-    <navigation :on-search="onKeyUp" :songs="results"></navigation>
-    <div class="content">
-      <h2>{{ username.toUpperCase() }}</h2>
+  <div class='room'>
+    <navigation :on-search='onKeyUp' :songs='results'></navigation>
+    <div class='content'>
+      <h2>{{ roomId.toUpperCase() }}</h2>
 
-      <section class="details">
+      <section class='details'>
         <img
-          src="https://i.scdn.co/image/8b662d81966a0ec40dc10563807696a8479cd48b"
-          class="current-album"
-          alt="Album cover">
-        <div class="info">
-          <img src="http://lorempixel.com/75/75/" alt="Votes">
+          :src='current.snippet.thumbnails.url'
+          class='current-album'
+          alt='Album cover'>
+        <div class='info'>
+          <img src='http://lorempixel.com/75/75/' alt='Votes'>
           <h2>Canción</h2>
           <h3>Album</h3>
           <p>Votado por: Pepe, Jorge y 3 más</p>
         </div>
       </section>
-      <section class="songs">
+      <section class='songs'>
         <br>
         <h3>COMING</h3>
-        <song-list :songs="songs" :is-host="isHost"></song-list>
+        <song-list :songs='songs' :is-host='isHost'></song-list>
       </section>
 
-      <player v-if="isHost" :playing="playing" :room="username"></player>
+      <player v-if='isHost' :playing='playing' :room='roomId'></player>
     </div>
   </div>
 </template>
@@ -31,43 +31,56 @@
   import SongList from './SongList'
   import Player from './Player'
   import Navigation from './Navigation'
-  import config from '../config'
 
   export default {
     name: 'Room',
     components: {SongList, Player, Navigation},
     data () {
       return {
-        playing: true,
         songs: [],
+        current: {
+          'kind': 'youtube#searchResult',
+          'etag': 'adsadsdawdwad',
+          'id': {
+            'kind': 'video',
+            'videoId': 'asdasdad',
+            'channelId': 'Nota Lokos',
+            'playlistId': '123123131'
+          },
+          'snippet': {
+            'publishedAt': new Date(),
+            'channelId': 'Nota Lokos',
+            'title': 'La Más Linda del Salón',
+            'description': 'Un tema re rancio sobre una mina que aprueba las materias y no sale',
+            'thumbnails': {
+              'AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k': {
+                'url': 'https://i.scdn.co/image/8b662d81966a0ec40dc10563807696a8479cd48b',
+                'width': 200,
+                'height': 200
+              }
+            },
+            channelTitle: 'Nota Lokos VEVO'
+          }
+        },
         results: [],
-        username: this.$route.params.username,
+        roomId: this.$route.params.username,
         isHost: false
       }
     },
-    created: function () {
-      if (!this.$localStorage.get('username') && this.isHost) {
-        this.$localStorage.set('username', this.username)
-      }
-
-      this.$http.get(`http://localhost:8080/api/room/${this.username}`)
-      .then((res) => {
-        this.songs = res.body.songs
-        this.isHost = res.body.isHost
-        this.playing = res.body.isPlaying
-        console.log(this.isHost, this.playing)
-      })
-    },
     methods: {
-      onKeyUp (query) {
-        if (query.length > 3) {
-          this.$http.get(`${config.BASE_URL}/api/room/${this.username}/searchSong?q=${query}`).then(
-            (res) => {
-              this.results = res.data
-              console.log('resultado', this.results)
+      onKeyUp (q) {
+        if (q.length > 3) {
+          this.$http.get('https://www.googleapis.com/youtube/v3/search', {
+            params: {
+              q,
+              part: 'snippet, id',
+              type: 'video',
+              key: 'AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k'
             }
-          )
-        } else if (query.length === 0) {
+          }).then((res) => {
+            this.results = res.data
+          })
+        } else if (q.length === 0) {
           this.results = []
         }
       }
@@ -78,8 +91,7 @@
           this.songs = songs
         },
         connect () {
-          // Subscribe to the room
-          this.$socket.emit('join', this.username)
+          this.$socket.emit('join', this.roomId)
         },
         removed (id) {
           let index = this.songs.map(song => song.id).indexOf(id)
@@ -92,7 +104,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
   h1, h2, h3, h4, p {
     margin: 8px 0;
   }

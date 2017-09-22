@@ -15,41 +15,26 @@
   import Navigation from './Navigation'
   import RoomList from './RoomList'
   import RoomButton from './RoomButton'
-  import config from '../config'
 
   export default {
     name: 'hello',
     data () {
       return {
-        url_base: 'https://accounts.spotify.com/authorize',
-        params: {
-          client_id: 'da73848fd0704f87a74b4d5d88dc1642',
-          response_type: 'code',
-          redirect_uri: `${config.BASE_URL}/api/auth/`,
-          scopes: encodeURIComponent('playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private streaming ugc-image-upload user-follow-modify user-follow-read user-library-read user-library-modify user-read-private user-read-birthdate user-read-email user-top-read user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played')
-        },
-        rooms: []
+        rooms: [{id: 'Carlitos'}, {id: 'Nameless'}, {id: 'Valen Manija'}]
       }
     },
     components: {Navigation, RoomList, RoomButton},
-    created () {
-      this.$http.get(`${config.BASE_URL}/api/room/`).then(response => {
-        this.rooms = response.body
-      })
-    },
     methods: {
       myRoom () {
         const username = this.$localStorage.get('username')
-        if (!username) {
-          window.location.assign(this.authLink)
-        } else {
-          this.$router.push(`/room/${username}`)
-        }
+        this.$router.push(`/room/${username}`)
       }
     },
-    computed: {
-      authLink () {
-        return `${this.url_base}?client_id=${this.params.client_id}&response_type=${this.params.response_type}&redirect_uri=${this.params.redirect_uri}&scope=${this.params.scopes}`
+    socket: {
+      events: {
+        rooms (rooms) {
+          this.rooms = rooms
+        }
       }
     }
   }

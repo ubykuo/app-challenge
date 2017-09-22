@@ -1,19 +1,19 @@
 <template>
   <div class="song">
-    <img :src="detail.album.images[1].url"
+    <img :src="imgSrc"
          class="album-cover"
          alt="Album cover">
 
     <div class="detail">
-      <h3>{{ detail.name }}</h3>
-      <h4>{{ detail.album.name }}</h4>
-      <h5>{{ detail.artists[0].name }}</h5>
+      <h3>{{ detail.snippet.title }}</h3>
+      <h4>{{ detail.snippet.channelTitle }}</h4>
+      <h5>{{ detail.snippet.description}}</h5>
     </div>
 
     <div class="actions" v-if="isPlaylist">
       <span class="votes">{{ totalVotes }}</span>
 
-      <div v-if="isHost" class="action" @click="onRemove(detail.id)">
+      <div v-if="isHost" class="action" @click="onRemove(detail)">
         <i class="fa fa-2x fa-trash"></i>
       </div>
 
@@ -34,20 +34,24 @@
   </div>
 </template>
 <script>
+  import config from '../config'
+
   export default {
     name: 'Song',
     props: {
       detail: {
-        type: Object,
-        required: true
+        type: Object
       },
       isHost: {
-        type: Boolean,
-        required: true
+        type: Boolean
       },
       isPlaylist: {
-        type: Boolean,
-        required: true
+        type: Boolean
+      }
+    },
+    data () {
+      return {
+        imgSrc: this.detail.snippet.thumbnails[config.CLIENT_ID].url
       }
     },
     computed: {
@@ -66,9 +70,6 @@
         this.$socket.emit('remove', id)
       },
       onVote (song) {
-        /* aca no tendria que ser al socket?
-         this.$socket.emit('vote', { uri: song.uri, id: song.id })
-        */
         this.$emit('vote', {
           user: this.$localStorage.get('id'),
           id: song.id

@@ -1,6 +1,7 @@
 <template>
   <ul class="rooms" :class="{grid: !empty() }">
-    <room-preview v-show="!empty()" v-for="room in rooms" :key="room.owner.spotify_id" :data="room"></room-preview>
+    <room-preview v-show="!empty()" v-for="room in rooms" :key="room.id"
+                  :data="room"></room-preview>
     <div class="no-rooms" v-show="empty()">
       <p>There are no rooms</p>
       <room-button :on-click="myRoom">Go To My Room</room-button>
@@ -36,7 +37,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $room-box : 1fr;
+  $room-box: 1fr;
 
   .rooms {
     padding: 0 20px;

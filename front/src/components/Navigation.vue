@@ -36,15 +36,38 @@
     data () {
       return {
         showNav: false,
-        query: ''
+        query: '',
+        songs: [{
+          'kind': 'youtube#searchResult',
+          'etag': 'adsadsdawdwad',
+          'id': {
+            'kind': 'video',
+            'videoId': 'asdasdad',
+            'channelId': 'Nota Lokos',
+            'playlistId': '123123131'
+          },
+          'snippet': {
+            'publishedAt': new Date(),
+            'channelId': 'Nota Lokos',
+            'title': 'La Más Linda del Salón',
+            'description': 'Un tema re rancio sobre una mina que aprueba las materias y no sale',
+            'thumbnails': {
+              'AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k': {
+                'url': 'https://i.scdn.co/image/8b662d81966a0ec40dc10563807696a8479cd48b',
+                'width': 200,
+                'height': 200
+              }
+            },
+            channelTitle: 'Nota Lokos VEVO'
+          }
+        }]
       }
     },
     props: {
       onSearch: {
         type: Function,
         required: false
-      },
-      songs: []
+      }
     },
     methods: {
       toggle () {

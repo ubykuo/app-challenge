@@ -1,7 +1,7 @@
 <template>
   <li class="room-preview" @click="onClick">
     <div class="cover" :style="{backgroundColor}">
-      <h2>{{data.owner.spotify_id}}</h2>
+      <h2>{{data.id}}</h2>
     </div>
   </li>
 </template>
@@ -29,7 +29,7 @@
     },
     methods: {
       onClick () {
-        this.$router.push(`/room/${this.data.owner.spotify_id}`)
+        this.$router.push(`/room/${this.data.id}`)
       }
     }
   }
