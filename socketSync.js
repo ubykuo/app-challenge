@@ -65,8 +65,13 @@ const socketSync = {
             */
 
             client.on('rooms', ()=>{
-                wsHelper.getRooms();
+                wsHelper
+                    .getRooms()
+                    .then((rooms)=>client.emit('room', rooms));
             });
+
+
+
 
         });
     }

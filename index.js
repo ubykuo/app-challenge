@@ -2,7 +2,7 @@
 const socketSync = require(__dirname + '/socketSync');
 const server = require('http').createServer();
 const mongoose = require(__dirname + '/dbConnection');
-const config = require(__dirname + '/config.js');
+const config = require(__dirname + '/config');
 
 const io = require('socket.io')(server);
 
