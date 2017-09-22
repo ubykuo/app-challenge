@@ -45,7 +45,11 @@
         required: false
       },
       songs: {
-        type: Array
+        type: Array,
+        required: false,
+        default: () => {
+          return []
+        }
       }
     },
     methods: {

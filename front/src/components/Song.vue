@@ -1,8 +1,8 @@
 <template>
   <div class="song">
-    <img :src="imgSrc"
+    <!--img :src="imgSrc"
          class="album-cover"
-         alt="Album cover">
+         alt="Album cover" -->
 
     <div class="detail">
       <h3>{{ detail.snippet.title }}</h3>
@@ -11,8 +11,6 @@
     </div>
 
     <div class="actions" v-if="isPlaylist">
-      <!--<span class="votes">{{ totalVotes }}</span> -->
-
       <div v-if="isHost" class="action" @click="onRemove(detail)">
         <i class="fa fa-2x fa-trash"></i>
       </div>
@@ -40,7 +38,7 @@
     name: 'Song',
     props: {
       detail: {
-        type: Object,
+        type: Object
       },
       isHost: {
         type: Boolean
@@ -49,20 +47,12 @@
         type: Boolean
       }
     },
-    data () {
-      return {
-        imgSrc: this.detail.snippet.thumbnails[config.CLIENT_ID].default.url
-      }
-    },
     computed: {
-      totalVotes () {
-        return this.detail.votes.length
+      imgSrc () {
+        return this.detail.snippet.thumbnails[config.CLIENT_ID].default.url
       },
       hasVoted () {
-        const id = this.$localStorage.get('id')
-        return (this.detail.votes.find(vote => {
-          return vote.user === id
-        }) !== undefined)
+        return false
       }
     },
     methods: {

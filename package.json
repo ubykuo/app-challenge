@@ -31,6 +31,7 @@
     "lodash": "^4.17.4",
     "mongoose": "^4.11.11",
     "socket.io": "^2.0.3",
-    "spotify-web-api-node": "^2.5.0"
+    "spotify-web-api-node": "^2.5.0",
+    "youtube-iframe": "^1.0.3"
   }
 }

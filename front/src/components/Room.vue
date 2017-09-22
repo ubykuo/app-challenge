@@ -4,16 +4,21 @@
     <div class='content'>
       <h2>{{ roomId.toUpperCase() }}</h2>
 
-      <section class='details'>
-        <img
-          :src='current.snippet.thumbnails.url'
-          class='current-album'
-          alt='Album cover'>
-        <div class='info'>
-          <img src='http://lorempixel.com/75/75/' alt='Votes'>
-          <h2>Canción</h2>
-          <h3>Album</h3>
-          <p>Votado por: Pepe, Jorge y 3 más</p>
+      <section :class="{ 'with-iframe': isHost}">
+        <div v-if="!isHost" class='details'>
+          <img
+            :src='current.snippet.thumbnails["AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k"].url'
+            class='current-album'
+            alt='Album cover'>
+          <div class='info'>
+            <h2>{{ current.snippet.title }}</h2>
+            <h3>{{ current.snippet.channelTitle }}</h3>
+            <p>Votado por: Pepe, Jorge y 3 más</p>
+          </div>
+        </div>
+        <div v-else>
+          <h3 class="now-playing">Now playing</h3>
+          <div id="player"></div>
         </div>
       </section>
       <section class='songs'>
@@ -31,6 +36,7 @@
   import SongList from './SongList'
   import Player from './Player'
   import Navigation from './Navigation'
+  import YouTubeIframeLoader from 'youtube-iframe'
   import config from '../config'
 
   export default {
@@ -38,7 +44,7 @@
     components: {SongList, Player, Navigation},
     data () {
       return {
-        songs: [],
+        results: [],
         current: {
           'kind': 'youtube#searchResult',
           'etag': 'adsadsdawdwad',
@@ -63,17 +69,197 @@
             channelTitle: 'Nota Lokos VEVO'
           }
         },
-        results: [],
-        roomId: this.$route.params.username,
-        isHost: false
+        songs: [
+          {
+            'kind': 'youtube#searchResult',
+            'etag': '\'VPWTmrH7dFmi4s1RqrK4tLejnRI/vy4Nryjwra9XhlGmtwxHKxV4s18\'',
+            'id': {
+              'kind': 'youtube#video',
+              'videoId': 'qkgbbFHQ7Yo'
+            },
+            'snippet': {
+              'publishedAt': '2017-09-19T18:00:08.000Z',
+              'channelId': 'UC5H_KXkPbEsGs0tFt8R35mA',
+              'title': 'The Martin Garrix Show: S2.E5 Rehearsals',
+              'description': 'Follow Martin Garrix: Facebook: http://facebook.com/MartinGarrix Twitter: http://twitter.com/MartinGarrix Instagram: http://instagram.com/MartinGarrix YouTube: ...',
+              'thumbnails': {
+                'default': {
+                  'url': 'https://i.ytimg.com/vi/qkgbbFHQ7Yo/default.jpg',
+                  'width': 120,
+                  'height': 90
+                },
+                'medium': {
+                  'url': 'https://i.ytimg.com/vi/qkgbbFHQ7Yo/mqdefault.jpg',
+                  'width': 320,
+                  'height': 180
+                },
+                'high': {
+                  'url': 'https://i.ytimg.com/vi/qkgbbFHQ7Yo/hqdefault.jpg',
+                  'width': 480,
+                  'height': 360
+                }
+              },
+              'channelTitle': 'Martin Garrix',
+              'liveBroadcastContent': 'none'
+            }
+          },
+          {
+            'kind': 'youtube#searchResult',
+            'etag': '\'VPWTmrH7dFmi4s1RqrK4tLejnRI/hGOMi2BGqxpzdAeOIFxE0LRbRBU\'',
+            'id': {
+              'kind': 'youtube#video',
+              'videoId': 'pNNMr5glICM'
+            },
+            'snippet': {
+              'publishedAt': '2017-05-26T04:00:18.000Z',
+              'channelId': 'UC5H_KXkPbEsGs0tFt8R35mA',
+              'title': 'Martin Garrix & Troye Sivan - There For You (Official Video)',
+              'description': 'My new single with Troye Sivan out now! Spotify: http://stmpd.co/TFYs iTunes: http://stmpd.co/TFYi Follow Martin Garrix: Facebook: ...',
+              'thumbnails': {
+                'default': {
+                  'url': 'https://i.ytimg.com/vi/pNNMr5glICM/default.jpg',
+                  'width': 120,
+                  'height': 90
+                },
+                'medium': {
+                  'url': 'https://i.ytimg.com/vi/pNNMr5glICM/mqdefault.jpg',
+                  'width': 320,
+                  'height': 180
+                },
+                'high': {
+                  'url': 'https://i.ytimg.com/vi/pNNMr5glICM/hqdefault.jpg',
+                  'width': 480,
+                  'height': 360
+                }
+              },
+              'channelTitle': 'Martin Garrix',
+              'liveBroadcastContent': 'none'
+            }
+          },
+          {
+            'kind': 'youtube#searchResult',
+            'etag': '\'VPWTmrH7dFmi4s1RqrK4tLejnRI/ZHfRSSLZsS4KVCbww6csC_F3Tcc\'',
+            'id': {
+              'kind': 'youtube#video',
+              'videoId': 'g_s17HMFaug'
+            },
+            'snippet': {
+              'publishedAt': '2017-07-31T19:21:31.000Z',
+              'channelId': 'UC5H_KXkPbEsGs0tFt8R35mA',
+              'title': 'Martin Garrix - Live @ Tomorrowland 2017',
+              'description': 'My new single with Troye Sivan out now! Spotify: http://stmpd.co/TFYs Martin Garrix closing the mainstage of Tomorrowland Sunday the 30th of ...',
+              'thumbnails': {
+                'default': {
+                  'url': 'https://i.ytimg.com/vi/g_s17HMFaug/default.jpg',
+                  'width': 120,
+                  'height': 90
+                },
+                'medium': {
+                  'url': 'https://i.ytimg.com/vi/g_s17HMFaug/mqdefault.jpg',
+                  'width': 320,
+                  'height': 180
+                },
+                'high': {
+                  'url': 'https://i.ytimg.com/vi/g_s17HMFaug/hqdefault.jpg',
+                  'width': 480,
+                  'height': 360
+                }
+              },
+              'channelTitle': 'Martin Garrix',
+              'liveBroadcastContent': 'none'
+            }
+          },
+          {
+            'kind': 'youtube#searchResult',
+            'etag': '\'VPWTmrH7dFmi4s1RqrK4tLejnRI/pkx2qjDBSKM92sRQhj8JWr3YOqQ\'',
+            'id': {
+              'kind': 'youtube#video',
+              'videoId': 'e2vBLd5Egnk'
+            },
+            'snippet': {
+              'publishedAt': '2017-01-27T05:00:01.000Z',
+              'channelId': 'UC5H_KXkPbEsGs0tFt8R35mA',
+              'title': 'Martin Garrix & Dua Lipa - Scared To Be Lonely (Official Video)',
+              'description': 'My new single Scared To ...',
+              'thumbnails': {
+                'default': {
+                  'url': 'https://i.ytimg.com/vi/e2vBLd5Egnk/default.jpg',
+                  'width': 120,
+                  'height': 90
+                },
+                'medium': {
+                  'url': 'https://i.ytimg.com/vi/e2vBLd5Egnk/mqdefault.jpg',
+                  'width': 320,
+                  'height': 180
+                },
+                'high': {
+                  'url': 'https://i.ytimg.com/vi/e2vBLd5Egnk/hqdefault.jpg',
+                  'width': 480,
+                  'height': 360
+                }
+              },
+              'channelTitle': 'Martin Garrix',
+              'liveBroadcastContent': 'none'
+            }
+          },
+          {
+            'kind': 'youtube#searchResult',
+            'etag': '\'VPWTmrH7dFmi4s1RqrK4tLejnRI/gTQEtSEReizraFWcG0gyNim7ZU8\'',
+            'id': {
+              'kind': 'youtube#video',
+              'videoId': 'JsKIAO11q1Y'
+            },
+            'snippet': {
+              'publishedAt': '2017-08-25T04:00:02.000Z',
+              'channelId': 'UC5H_KXkPbEsGs0tFt8R35mA',
+              'title': 'Martin Garrix - Pizza (Official Video)',
+              'description': 'My new song  is out now! Spotify: http://stmpd.co/MGPIZZAs iTunes: http://stmpd.co/MGPIZZAi Apple Music: http://stmpd.co/MGPIZZAa Follow Martin ...',
+              'thumbnails': {
+                'default': {
+                  'url': 'https://i.ytimg.com/vi/JsKIAO11q1Y/default.jpg',
+                  'width': 120,
+                  'height': 90
+                },
+                'medium': {
+                  'url': 'https://i.ytimg.com/vi/JsKIAO11q1Y/mqdefault.jpg',
+                  'width': 320,
+                  'height': 180
+                },
+                'high': {
+                  'url': 'https://i.ytimg.com/vi/JsKIAO11q1Y/hqdefault.jpg',
+                  'width': 480,
+                  'height': 360
+                }
+              },
+              'channelTitle': 'Martin Garrix',
+              'liveBroadcastContent': 'none'
+            }
+          }
+        ],
+        roomId: this.$route.params.username
       }
     },
     created: function () {
       this.$socket.emit('access-room', {id: this.roomId})
+
+      if (this.isHost) {
+        YouTubeIframeLoader.load((YT) => {
+          new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: 'M7lc1UVf-VE'
+          })
+        })
+      }
     },
     destroyed: function () {
       if (this.isHost) {
         this.$socket.emit('destroy', {id: this.roomId})
+      }
+    },
+    computed: {
+      isHost () {
+        return this.roomId === this.$localStorage.get('id')
       }
     },
     methods: {
@@ -128,7 +314,10 @@
 
   .current-album {
     max-width: 50%;
-    height: inherit;
+  }
+
+  .with-iframe {
+    height: 420px !important;
   }
 
   .details {
@@ -143,5 +332,9 @@
   .info {
     text-align: left;
     padding: 0 25px;
+  }
+
+  .now-playing {
+    text-align: left;
   }
 </style>
