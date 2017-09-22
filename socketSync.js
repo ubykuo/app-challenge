@@ -4,13 +4,12 @@ const room = require(__dirname + '/models/Room');
 let clientsConnected = 0;
 
 
-//TODO no usar la bd de mongo todo el tiempo , ¿usar redis???. Muchos updates
 const socketSync = {
     init: function (io) {
 
         io.on('connection', function (client) {
 
-
+            /*
             clientsConnected = clientsConnected + 1;
 
             console.log("Clientes conectados: ", clientsConnected);
@@ -32,19 +31,27 @@ const socketSync = {
                 room.findOne({"owner.spotify_id": roomId})
                     .then((room) => {
                         room.songs.push(song);
-                        io.in("room-" + roomId).emit('playlist', room.songs);
                         room.save();
+                        io.in("room-" + roomId).emit('playlist', room.songs);
                     });
 
             });
 
             client.on("addSongToPlaylist", (roomId) => {
-                let songs;//no esta bueno tener esto como global
+                let songs;
+
+                console.log("Me piden agregar una cancion a la playlist de spotify");
+
                 room.findOne({"owner.spotify_id": roomId})
                     .then(room => {
                         //ASUMO QUE LA CANCION ESTA
+                        console.log("id de la room", roomId);
                         let song  = _.first(room.songs);
+                        console.log(room.songs.length);
+                        _.remove(room.songs, song);
                         songs = room.songs;
+                        console.log(room.songs.length);
+                        room.save();
                         wsHelper.addSongToPlaylist(song, roomId, io);
                     })
                     .then((data) => io.in("room-" + roomId).emit('playlist', songs));
@@ -55,6 +62,12 @@ const socketSync = {
                 clientsConnected = clientsConnected - 1;
                 console.log("Clientes conectados: ", clientsConnected);
             });
+            */
+
+            client.on('rooms', ()=>{
+                wsHelper.getRooms();
+            });
+
         });
     }
 };

@@ -18,14 +18,19 @@ socket.on('connect', function(){
 
   socket.emit('join', ROOM_ID);
 
-  //socket.emit('addSong', ROOM_ID ,song);
+  socket.emit('addSong', ROOM_ID ,song);
 
-  socket.emit('addSongToPlaylist', ROOM_ID);
 
 });
 
+let addSong = true;
+
 socket.on('playlist',(playlist)=>{
   console.log("Recibi un playlist");
+  if(addSong) {
+      socket.emit('addSongToPlaylist', ROOM_ID);
+      addSong = false;
+  }
 });
 
 
