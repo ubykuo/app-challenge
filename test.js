@@ -13,24 +13,12 @@ let song = {
     artist: "lal"
 };
 
-socket.on('connect', function(){
-  console.log("Me conecte al servidor");
-
-  socket.emit('join', ROOM_ID);
-
-  socket.emit('addSong', ROOM_ID ,song);
-
-
-});
+socket.on('connect', function(){});
 
 let addSong = true;
 
 socket.on('playlist',(playlist)=>{
-  console.log("Recibi un playlist");
-  if(addSong) {
-      socket.emit('addSongToPlaylist', ROOM_ID);
-      addSong = false;
-  }
+
 });
 
 
