@@ -11,7 +11,7 @@
     </div>
 
     <div class="actions" v-if="isPlaylist">
-      <span class="votes">{{ totalVotes }}</span>
+      <!--<span class="votes">{{ totalVotes }}</span> -->
 
       <div v-if="isHost" class="action" @click="onRemove(detail)">
         <i class="fa fa-2x fa-trash"></i>
@@ -40,7 +40,7 @@
     name: 'Song',
     props: {
       detail: {
-        type: Object
+        type: Object,
       },
       isHost: {
         type: Boolean
@@ -51,7 +51,7 @@
     },
     data () {
       return {
-        imgSrc: this.detail.snippet.thumbnails[config.CLIENT_ID].url
+        imgSrc: this.detail.snippet.thumbnails[config.CLIENT_ID].default.url
       }
     },
     computed: {
@@ -67,17 +67,24 @@
     },
     methods: {
       onRemove (id) {
-        this.$socket.emit('remove', id)
+        this.$socket.emit('remove', {
+          room: this.$route.params.username,
+          song: this.song
+        })
       },
       onVote (song) {
         this.$emit('vote', {
           user: this.$localStorage.get('id'),
-          id: song.id
+          room: this.$route.params.username,
+          song: this.song
         })
       },
       addToPlaylist (song) {
-        /* pasar el atributo songs.uri */
-        this.$socket.emit('addSong', song)
+        this.$socket.emit('addSong', {
+          user: this.$localStorage.get('id'),
+          room: this.$route.params.username,
+          song: this.song
+        })
         console.log(song.id, song.uri)
       }
     }

@@ -31,6 +31,7 @@
   import SongList from './SongList'
   import Player from './Player'
   import Navigation from './Navigation'
+  import config from '../config'
 
   export default {
     name: 'Room',
@@ -67,6 +68,14 @@
         isHost: false
       }
     },
+    created: function () {
+      this.$socket.emit('access-room', {id: this.roomId})
+    },
+    destroyed: function () {
+      if (this.isHost) {
+        this.$socket.emit('destroy', {id: this.roomId})
+      }
+    },
     methods: {
       onKeyUp (q) {
         if (q.length > 3) {
@@ -75,10 +84,11 @@
               q,
               part: 'snippet, id',
               type: 'video',
-              key: 'AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k'
+              key: config.CLIENT_ID
             }
           }).then((res) => {
-            this.results = res.data
+            console.log(res.data.items)
+            this.results = res.data.items
           })
         } else if (q.length === 0) {
           this.results = []
@@ -87,17 +97,10 @@
     },
     socket: {
       events: {
-        playlist (songs) {
-          this.songs = songs
-        },
-        connect () {
-          this.$socket.emit('join', this.roomId)
-        },
-        removed (id) {
-          let index = this.songs.map(song => song.id).indexOf(id)
-          if (index !== -1) {
-            this.songs.splice(index, 1)
-          }
+        room (room) {
+          this.current = room.current
+          this.songs = room.songs
+          this.isHost = (this.roomId === room.room_id)
         }
       }
     }
