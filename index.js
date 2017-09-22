@@ -11,6 +11,19 @@ const room = require(__dirname + '/routes/room');
 
 const io = require('socket.io')(server);
 
+if (process.env.NODE_ENV == "local"){
+  let prepareRequests = function (request, response, next) {
+    let origin = request.get('origin');
+    response.header("Access-Control-Allow-Origin", origin);
+    response.header("Access-Control-Allow-Credentials", "true");
+    response.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type");
+    response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+    next();
+  };
+
+  app.use(prepareRequests)
+}
+
 
 // search in spotify https://api.spotify.com/v1/search?q=Naistumichiu&type=track
 // play items https://api.spotify.com/v1/me/player/play -->> {"uris":["spotify:track:6QsBAmr6MYenvug840GTWD"]}

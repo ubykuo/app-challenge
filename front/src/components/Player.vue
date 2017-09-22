@@ -1,22 +1,42 @@
 <template>
   <div class="player">
     <span @click="togglePlay"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
-    <span @click="forward()"><i class="fa fa-2x fa-forward"></i></span>
+    <span @click="forward"><i class="fa fa-2x fa-forward"></i></span>
   </div>
 </template>
 
 <script>
   export default {
     name: 'Player',
+    props: {
+      playing: true,
+      room: {
+        type: String,
+        required: true
+      }
+    },
     data () {
       return {
+        /*
         playing: false
+        */
       }
     },
     methods: {
       togglePlay () {
         this.playing = !this.playing
+        /*
         this.$emit(this.playing ? 'play' : 'pause')
+        */
+        this.$socket.emit('status', {
+          room: this.room,
+          status: (this.playing ? 'play' : 'pause')
+        })
+      },
+      forward () {
+        this.$socket.emit('foward', {
+          room: this.room
+        })
       }
     },
     computed: {
@@ -46,13 +66,13 @@
 
   span {
     width: 30px;
+    cursor: pointer;
     i {
       color: $secondary
     }
 
     &:not(:last-child) {
       margin-right: 20px;
-
     }
   }
 </style>

@@ -27,6 +27,18 @@ controller.get = function (req, res) {
                 response.isHost = (req.session.spotify_id === room.owner.spotify_id);
             }
             response.isPlaying = status.body.hasOwnProperty('is_playing') ? status.body.is_playing : false;
+            if (response.isPlaying) {
+                response.nowPlaying = {
+                    id: status.body.item.id,
+                    name: status.body.item.name,
+                    uri: status.body.item.uri,
+                    artists: status.body.item.artists,
+                    album: {
+                        name: status.body.item.album.name,
+                        images: status.body.item.album.images
+                    }
+                }
+            }
             res.json(response);
         })
         .catch((error) => {
@@ -62,6 +74,52 @@ controller.searchSong = function (req, res) {
 
 
 };
+
+controller.getSongs = function (req, res) {
+    let roomId = req.params.roomId;
+    Room.findOne({"owner.spotify_id": roomId})
+        .then((result) => {
+            res.json({songs:result.songs});
+        });
+}
+
+controller.nowPlaying = function (req, res) {
+    let roomId = req.params.roomId;
+    let roomPromise = Room.findOne({"owner.spotify_id": roomId});
+
+    let statusPromise = roomPromise.then((room) => {
+        let spotifyClient = new SpotifyApi();
+
+        spotifyClient.setAccessToken(room.owner.spotify_token);
+        spotifyClient.setRefreshToken(room.owner.spotify__refresh_token);
+
+        return spotifyClient.getMyCurrentPlayingTrack();
+
+    });
+
+    bluebird.join(roomPromise, statusPromise,
+        (room, status) => {
+            let response = {};
+            response.isPlaying = status.body.hasOwnProperty('is_playing') ? status.body.is_playing : false;
+            if (response.isPlaying) {
+                response.nowPlaying = {
+                    id: status.body.item.id,
+                    name: status.body.item.name,
+                    uri: status.body.item.uri,
+                    artists: status.body.item.artists,
+                    album: {
+                        name: status.body.item.album.name,
+                        images: status.body.item.album.images
+                    }
+                }
+            }
+            res.json(response);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send();
+        })
+}
 
 
 module.exports = controller;
