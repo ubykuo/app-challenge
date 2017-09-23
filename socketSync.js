@@ -9,19 +9,19 @@ const socketSync = {
 
     io.on('connection', function (client) {
 
-      client.on('rooms', () => {
+      client.on('init', () => {
         Room.find({}).then((rooms) => client.emit('rooms', rooms));
       });
 
       client.on('access-room', (room_id) => {
         Room
-          .update({"room_id": room_id}, {$setOnInsert: {"room_id": room_id}}, {upsert: true, new: true})
-          .then((result) => {
-            return Room.findOne({"room_id": room_id});
+          .update({room_id: room_id}, {$setOnInsert: {room_id: room_id}}, {upsert: true, new: true})
+          .then(() => {
+            return Room.findOne({room_id: room_id});
           })
           .then((room) => {
             client.join(room.room_id);
-            client.emit('room ', room);
+            client.emit('room', room);
             return Room.find({});
           })
           .then((rooms) => {
@@ -43,8 +43,8 @@ const socketSync = {
         Room
           .findOneAndUpdate({
             room_id: room_id,
-            "songs.id": song.id
-          }, {$push: {"songs.$.votes": user_id}}, {returnNewDocument: true})
+            "songs.id.videoId": song.id.videoId
+          }, {$push: {"songs.$.votes": user_id}}, {new: true})
           .then((room) => {
             io.to(room.room_id).emit('room', room);
           });
@@ -76,10 +76,11 @@ const socketSync = {
           })
           .then(() => {
             io.to(room_id).emit('destroyed');
-            return wsHelper
-              .getRooms();
+            return Room.find({});
           })
-          .then((rooms) => client.emit('rooms', rooms));
+          .then((rooms) => {
+            io.emit('rooms', rooms);
+          });
       });
 
       client.on('next', (room_id) => {
