@@ -7,7 +7,7 @@
       <section v-if="hasCurrent">
         <div v-if="!isHost" class='details'>
           <img
-            :src='current.snippet.thumbnails["AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k"].url'
+            :src='current.snippet.thumbnails.default.url'
             class='current-album'
             alt='Album cover'>
           <div class='info'>
@@ -28,7 +28,9 @@
         <h3>COMING</h3>
         <song-list :songs='songs' :is-host='isHost'></song-list>
       </section>
+
     </div>
+    <player v-if="isHost" :playing="isPlaying"></player>
   </div>
 </template>
 
@@ -36,58 +38,24 @@
   import SongList from './SongList'
   import Navigation from './Navigation'
   import YouTubeIframeLoader from 'youtube-iframe'
+  import Player from './Player'
   import config from '../config'
 
   export default {
     name: 'Room',
-    components: {SongList, Navigation},
+    components: {SongList, Navigation, Player},
     data () {
       return {
         results: [],
-        current: {},
+        currentSong: {},
         songs: [],
-        roomId: this.$route.params.username
+        roomId: this.$route.params.username,
+        isPlaying: false,
+        player: null
       }
     },
     created: function () {
       this.$socket.emit('access-room', this.roomId)
-
-      if (this.isHost) {
-        YouTubeIframeLoader.load((YT) => {
-          const dimensions = getPlayerDimensions()
-          console.info(dimensions)
-
-          new YT.Player('player', {
-            height: dimensions.h,
-            width: dimensions.w,
-            videoId: 'M7lc1UVf-VE',
-            events: {
-              onReady: onPlayerReady,
-              onStateChange: onStateChange.bind(this)
-            }
-          })
-
-          function onPlayerReady (event) {
-            console.info(event)
-          }
-
-          function onStateChange (event) {
-            if (event.data === YT.PlayerState.ENDED) {
-              this.$socket.emit('next')
-            }
-          }
-
-          function getPlayerDimensions () {
-            const mq = window.matchMedia('min-width: 641px')
-            let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-
-            return {
-              w: (mq.matches ? w / 1.5 : w) - 60,
-              h: w / 1.64
-            }
-          }
-        })
-      }
     },
     destroyed: function () {
       if (this.isHost) {
@@ -99,7 +67,7 @@
         return this.roomId === this.$localStorage.get('id')
       },
       hasCurrent () {
-        return Object.keys(this.current).length > 0
+        return Object.keys(this.currentSong).length > 0
       }
     },
     methods: {
@@ -126,12 +94,59 @@
         } else if (q.length === 0) {
           this.results = []
         }
+      },
+      loadPlayer (videoId) {
+        YouTubeIframeLoader.load((YT) => {
+          const dimensions = getPlayerDimensions()
+          console.info(dimensions)
+
+          function onPlayerReady (event) {
+            console.info(event)
+          }
+
+          function onStateChange (event) {
+            switch (event.data) {
+              case YT.PlayerState.PLAYING:
+                this.isPlaying = true
+                break
+              case YT.PlayerState.ENDED:
+                this.$socket.emit('next', this.roomId)
+                this.isPlaying = false
+                break
+              case YT.PlayerState.PAUSED:
+                this.isPlaying = false
+                break
+            }
+          }
+
+          function getPlayerDimensions () {
+            const mq = window.matchMedia('min-width: 641px')
+            let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+
+            return {
+              w: (mq.matches ? w / 1.5 : w) - 60,
+              h: w / 1.64
+            }
+          }
+
+          this.player = new YT.Player('player', {
+            height: dimensions.h,
+            width: dimensions.w,
+            videoId: videoId,
+            playerVars: {
+              autoplay: 1
+            },
+            events: {
+              onReady: onPlayerReady,
+              onStateChange: onStateChange.bind(this)
+            }
+          })
+        })
       }
     },
     socket: {
       events: {
         room (currentRoom) {
-          this.current = currentRoom.current || {}
           this.songs = currentRoom.songs.sort((a, b) => {
             if (a.votes.length < b.votes.length) {
               return 1
@@ -143,6 +158,20 @@
 
             return 0
           })
+
+          debugger
+          if (this.songs.length > 0 && !this.currentSong) {
+            this.$socket.emit('next', this.roomId)
+          }
+        },
+        current (currentSong) {
+          this.currentSong = currentSong
+
+          if (!this.player) {
+            this.player = this.loadPlayer(currentSong.id.videoId)
+          } else {
+            this.player.loadVideoById(currentSong.id.videoId)
+          }
         },
         destroyed () {
           if (!this.isHost) {
@@ -198,5 +227,19 @@
 
   .now-playing {
     text-align: left;
+  }
+
+  #player {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+  }
+  #player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 </style>

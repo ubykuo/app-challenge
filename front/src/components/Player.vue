@@ -9,39 +9,23 @@
   export default {
     name: 'Player',
     props: {
-      playing: true,
-      room: {
-        type: String,
+      playing: {
+        type: Boolean,
         required: true
-      }
-    },
-    data () {
-      return {
-        /*
-        playing: false
-        */
       }
     },
     methods: {
       togglePlay () {
         this.playing = !this.playing
-        /*
-        this.$emit(this.playing ? 'play' : 'pause')
-        */
-        this.$socket.emit('status', {
-          room: this.room,
-          status: (this.playing ? 'play' : 'pause')
-        })
       },
       forward () {
-        this.$socket.emit('foward', {
-          room: this.room
-        })
+        debugger
+        this.$socket.emit('next', this.$route.params.username)
       }
     },
     computed: {
       getPlayingIcon () {
-        return this.playing ? 'fa-play' : 'fa-pause'
+        return this.playing ? 'fa-pause' : 'fa-play'
       }
     }
   }
