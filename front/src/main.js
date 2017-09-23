@@ -9,7 +9,7 @@ import VueLocalStorage from 'vue-localstorage'
 
 Vue.use(VueResource)
 Vue.use(VueLocalStorage)
-Vue.use(VueWebsocket, 'https://app-challenge.herokuapp.com')
+Vue.use(VueWebsocket, 'ws://app-challenge.herokuapp.com')
 
 Vue.config.productionTip = false
 
