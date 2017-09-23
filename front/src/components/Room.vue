@@ -4,7 +4,7 @@
     <div class='content'>
       <h2>{{ roomId.toUpperCase() }}</h2>
 
-      <section :class="{ 'with-iframe': isHost}">
+      <section :style="{}">
         <div v-if="!isHost" class='details'>
           <img
             :src='current.snippet.thumbnails["AIzaSyB_bzFNBzczyua7-c1DyNefI81waHu7j7k"].url'
@@ -26,22 +26,19 @@
         <h3>COMING</h3>
         <song-list :songs='songs' :is-host='isHost'></song-list>
       </section>
-
-      <player v-if='isHost' :playing='playing' :room='roomId'></player>
     </div>
   </div>
 </template>
 
 <script>
   import SongList from './SongList'
-  import Player from './Player'
   import Navigation from './Navigation'
   import YouTubeIframeLoader from 'youtube-iframe'
   import config from '../config'
 
   export default {
     name: 'Room',
-    components: {SongList, Player, Navigation},
+    components: {SongList, Navigation},
     data () {
       return {
         results: [],
@@ -244,11 +241,38 @@
 
       if (this.isHost) {
         YouTubeIframeLoader.load((YT) => {
+          const dimensions = getPlayerDimensions()
+          console.info(dimensions)
+
           new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: 'M7lc1UVf-VE'
+            height: dimensions.h,
+            width: dimensions.w,
+            videoId: 'M7lc1UVf-VE',
+            events: {
+              onReady: onPlayerReady,
+              onStateChange: onStateChange.bind(this)
+            }
           })
+
+          function onPlayerReady (event) {
+            console.info(event)
+          }
+
+          function onStateChange (event) {
+            if (event.data === YT.PlayerState.ENDED) {
+              this.$socket.emit('next')
+            }
+          }
+
+          function getPlayerDimensions () {
+            const mq = window.matchMedia('min-width: 641px')
+            let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+
+            return {
+              w: (mq.matches ? w / 1.5 : w) - 60,
+              h: w / 1.64
+            }
+          }
         })
       }
     },
@@ -303,17 +327,14 @@
       padding: 15px 5%;
     }
 
-    @media (min-width: 641px) and (max-width: 1023px) {
+    @media (min-width: 641px) {
       padding: 15px 10vw;
-    }
-
-    @media (min-width: 1024px) {
-      padding: 15px 30vw;
     }
   }
 
   .current-album {
     max-width: 50%;
+    height: inherit;
   }
 
   .with-iframe {

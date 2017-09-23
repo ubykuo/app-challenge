@@ -7,7 +7,6 @@
     <div class="detail">
       <h3>{{ detail.snippet.title }}</h3>
       <h4>{{ detail.snippet.channelTitle }}</h4>
-      <h5>{{ detail.snippet.description}}</h5>
     </div>
 
     <div class="actions" v-if="isPlaylist">

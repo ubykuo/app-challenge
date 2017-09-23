@@ -20,19 +20,24 @@
     name: 'hello',
     data () {
       return {
-        rooms: [{id: 'Carlitos'}, {id: 'Nameless'}, {id: 'Valen Manija'}]
+        rooms: []
       }
     },
     components: {Navigation, RoomList, RoomButton},
     methods: {
       myRoom () {
-        const username = this.$localStorage.get('username')
+        const username = this.$localStorage.get('id')
         this.$router.push(`/room/${username}`)
       }
+    },
+    created () {
+      debugger
+      this.$socket.emit('rooms')
     },
     socket: {
       events: {
         rooms (rooms) {
+          debugger
           this.rooms = rooms
         }
       }
