@@ -65,9 +65,7 @@ const socketSync = {
       */
 
       client.on('rooms', () => {
-        wsHelper
-          .getRooms()
-          .then((rooms) => client.emit('rooms', rooms));
+          Room.find({}).then((rooms) => client.emit('rooms', rooms));
       });
 
       client.on('access-room', (room_id) => {
