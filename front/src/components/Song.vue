@@ -75,7 +75,6 @@
         )
       },
       onVote (song) {
-        debugger
         this.$socket.emit('vote',
           this.$localStorage.get('id'),
           this.$route.params.username,

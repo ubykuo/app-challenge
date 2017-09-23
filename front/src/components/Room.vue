@@ -6,9 +6,9 @@
       :with-search="true">
     </navigation>
     <div class='content'>
-      <h2 class="title">Your Room</h2>
+      <h2 class="title">Playing at your Room</h2>
 
-      <section v-if="hasCurrent">
+      <section v-if="hasCurrent" class="info-container">
         <div class='details'>
           <img
             :src='currentSong.snippet.thumbnails.medium.url'
@@ -30,12 +30,12 @@
         <h3>No song playing currently</h3>
       </section>
       <section class='songs'>
-        <h3>COMING</h3>
+        <h3>Coming up next</h3>
         <song-list :songs='songs' :is-host='isHost'></song-list>
       </section>
 
     </div>
-    <player v-if="isHost" :playing="isPlaying" :progress="progress"></player>
+    <player v-if="isHost" :playing="isPlaying" :progress="progress" :on-toggle="onToggle"></player>
   </div>
 </template>
 
@@ -98,6 +98,18 @@
           })
         } else if (q.length === 0) {
           this.results = []
+        }
+      },
+      onToggle () {
+        this.isPlaying = !this.isPlaying
+        if (this.isPlaying) {
+          if (this.hasCurrent) {
+            this.player.playVideo()
+          } else {
+            this.$socket.emit('next', this.roomId)
+          }
+        } else {
+          this.player.pauseVideo()
         }
       },
       loadPlayer (videoId) {
@@ -174,6 +186,8 @@
 </script>
 
 <style lang='scss' scoped>
+  @import '~@/variables.scss';
+
   h1, h2, h3, h4, p {
     margin: 8px 0;
   }
@@ -209,6 +223,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      height: 40vh;
 
       .info {
         padding-top: 20px;
@@ -246,5 +261,10 @@
     @media (max-width: 641px) {
       text-align: center;
     }
+  }
+
+  .info-container {
+    border-bottom: 2px solid $secondary;
+    margin-bottom: 25px;
   }
 </style>

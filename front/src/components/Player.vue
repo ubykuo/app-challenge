@@ -2,7 +2,7 @@
   <div class="player-container">
     <progress-bar :progress="progress"></progress-bar>
     <div class="player">
-      <span @click="togglePlay"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
+      <span @click="onToggle"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
       <span @click="forward"><i class="fa fa-2x fa-forward"></i></span>
     </div>
   </div>
@@ -21,13 +21,14 @@
       progress: {
         type: Number,
         required: true
+      },
+      onToggle: {
+        type: Function,
+        required: true
       }
     },
     components: {ProgressBar},
     methods: {
-      togglePlay () {
-        this.playing = !this.playing
-      },
       forward () {
         this.$socket.emit('next', this.$route.params.username)
       }

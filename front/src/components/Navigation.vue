@@ -109,6 +109,10 @@
     padding: 15px;
     display: flex;
     align-items: center;
+
+    input {
+      width: 70vw;
+    }
   }
 
   .toggle {
@@ -141,5 +145,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 641px) {
+      width: 90vw;
+    }
   }
 </style>

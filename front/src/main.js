@@ -4,23 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
-import VueAuthenticate from 'vue-authenticate'
 import VueWebsocket from 'vue-websocket'
 import VueLocalStorage from 'vue-localstorage'
 
 Vue.use(VueResource)
 Vue.use(VueLocalStorage)
-Vue.use(VueWebsocket, 'ws://192.168.0.22:8080')
-Vue.use(VueAuthenticate, {
-  baseUrl: 'https://accounts.spotify.com/authorize', // Your API domain
-
-  providers: {
-    spotify: {
-      clientId: 'da73848fd0704f87a74b4d5d88dc1642',
-      redirectUri: 'http://localhost:8080/auth' // Your client app URL
-    }
-  }
-})
+Vue.use(VueWebsocket, 'ws://app-challenge.herokuapp.com')
 
 Vue.config.productionTip = false
 
