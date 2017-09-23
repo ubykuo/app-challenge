@@ -20,8 +20,11 @@ const socketSync = {
             return Room.findOne({room_id: room_id});
           })
           .then((room) => {
-            client.join(room.room_id);
+            client.join(room_id);
             client.emit('room', room);
+            if (typeof room.current === 'object') {
+              client.emit('current', room.current);
+            }
             return Room.find({});
           })
           .then((rooms) => {
@@ -35,7 +38,7 @@ const socketSync = {
         Room
           .findOneAndUpdate({"room_id": room_id}, {$push: {"songs": songObject}}, {new: true})
           .then((room) => {
-            io.to(room.room_id).emit('room', room);
+            io.to(room_id).emit('room', room);
           })
       });
 
@@ -100,13 +103,14 @@ const socketSync = {
               room.current = nextSong;
 
               for (let i = 0; i < room.songs.length; i++) {
-                if (room.songs[i].id.videoId === song.id.videoId) {
+                if (room.songs[i].id.videoId === nextSong.id.videoId) {
                   room.songs.splice(i, 1);
                   break;
                 }
               }
               return room.save()
                 .then((room) => {
+                  io.to(room.room_id).emit('current', room.current);
                   io.to(room.room_id).emit('room', room);
                 });
             }
