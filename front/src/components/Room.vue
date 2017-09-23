@@ -20,7 +20,7 @@
             <p>Votes {{ currentSong.votes.length }}</p>
           </div>
         </div>
-        <div v-if="isHost" >
+        <div v-if="isHost">
           <div id="player-container">
             <div id="player"></div>
           </div>
@@ -35,7 +35,7 @@
       </section>
 
     </div>
-    <player v-if="isHost" :playing="isPlaying"></player>
+    <player v-if="isHost" :playing="isPlaying" :progress="progress"></player>
   </div>
 </template>
 
@@ -56,7 +56,8 @@
         songs: [],
         roomId: this.$route.params.username,
         isPlaying: false,
-        player: null
+        player: null,
+        progress: 0
       }
     },
     created: function () {
@@ -93,7 +94,6 @@
               this.previousRequest = request
             }
           }).then((res) => {
-            console.log(res.data.items)
             this.results = res.data.items
           })
         } else if (q.length === 0) {
@@ -102,20 +102,7 @@
       },
       loadPlayer (videoId) {
         YouTubeIframeLoader.load((YT) => {
-          function onStateChange (event) {
-            switch (event.data) {
-              case YT.PlayerState.PLAYING:
-                this.isPlaying = true
-                break
-              case YT.PlayerState.ENDED:
-                this.$socket.emit('next', this.roomId)
-                this.isPlaying = false
-                break
-              case YT.PlayerState.PAUSED:
-                this.isPlaying = false
-                break
-            }
-          }
+          let mytimer
 
           this.player = new YT.Player('player', {
             height: '100%',
@@ -128,6 +115,27 @@
               onStateChange: onStateChange.bind(this)
             }
           })
+
+          function onStateChange (event) {
+            switch (event.data) {
+              case YT.PlayerState.PLAYING:
+                this.isPlaying = true
+                let playerTotalTime = this.player.getDuration()
+                mytimer = setInterval(() => {
+                  this.progress = (this.player.getCurrentTime() / playerTotalTime) * 100
+                }, 1000)
+                break
+              case YT.PlayerState.ENDED:
+                this.$socket.emit('next', this.roomId)
+                this.isPlaying = false
+                clearTimeout(mytimer)
+                break
+              case YT.PlayerState.PAUSED:
+                this.isPlaying = false
+                clearTimeout(mytimer)
+                break
+            }
+          }
         })
       }
     },

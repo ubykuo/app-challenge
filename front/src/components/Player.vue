@@ -1,25 +1,34 @@
 <template>
-  <div class="player">
-    <span @click="togglePlay"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
-    <span @click="forward"><i class="fa fa-2x fa-forward"></i></span>
+  <div class="player-container">
+    <progress-bar :progress="progress"></progress-bar>
+    <div class="player">
+      <span @click="togglePlay"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
+      <span @click="forward"><i class="fa fa-2x fa-forward"></i></span>
+    </div>
   </div>
 </template>
 
 <script>
+  import ProgressBar from './ProgressBar'
+
   export default {
     name: 'Player',
     props: {
       playing: {
         type: Boolean,
         required: true
+      },
+      progress: {
+        type: Number,
+        required: true
       }
     },
+    components: {ProgressBar},
     methods: {
       togglePlay () {
         this.playing = !this.playing
       },
       forward () {
-        debugger
         this.$socket.emit('next', this.$route.params.username)
       }
     },
@@ -34,13 +43,16 @@
 <style lang="scss" scoped>
   @import '~@/variables.scss';
 
-  .player {
+  .player-container {
     position: fixed;
-    height: $player-height;
     width: 100%;
     left: 0;
     bottom: 0;
     margin: 0;
+  }
+
+  .player {
+    height: $player-height;
     background-color: $terciary;
     box-shadow: 0px -5px 15px 0px $background;
     display: flex;
