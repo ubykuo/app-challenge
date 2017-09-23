@@ -14,7 +14,7 @@
         <i class="fa fa-2x fa-trash"></i>
       </div>
 
-      <div v-else-if="!hasVoted" class="action"
+      <div v-else-if="!isHost && !hasVoted" class="action"
            @click="onVote(detail)">
         <i class="fa fa-2x fa-thumbs-up"></i>
       </div>
@@ -59,11 +59,12 @@
       }
     },
     methods: {
-      onRemove (id) {
-        this.$socket.emit('remove', {
-          room: this.$route.params.username,
-          song: this.song
-        })
+      onRemove (song) {
+        debugger
+        this.$socket.emit('remove',
+          this.$route.params.username,
+          song
+        )
       },
       onVote (song) {
         this.$emit('vote', {
@@ -78,7 +79,6 @@
           this.$route.params.username,
           song
         )
-
         this.onSelect()
       }
     }
@@ -113,7 +113,7 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    padding: 0 20px;
+    padding: 10px 20px;
     width: 100%;
   }
 
