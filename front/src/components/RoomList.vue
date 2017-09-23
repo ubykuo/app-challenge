@@ -1,6 +1,6 @@
 <template>
   <ul class="rooms" :class="{grid: !empty() }">
-    <room-preview v-show="!empty()" v-for="room in rooms" :key="room.id"
+    <room-preview v-show="!empty()" v-for="room in rooms"
                   :data="room"></room-preview>
     <div class="no-rooms" v-show="empty()">
       <p>There are no rooms</p>

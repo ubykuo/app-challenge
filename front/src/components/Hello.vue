@@ -31,11 +31,13 @@
       }
     },
     created () {
-      this.$socket.emit('rooms')
+      this.$socket.emit('init')
     },
     socket: {
       events: {
         rooms (currentRooms) {
+          console.info(currentRooms)
+          debugger
           this.rooms = currentRooms
         }
       }

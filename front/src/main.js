@@ -10,7 +10,7 @@ import VueLocalStorage from 'vue-localstorage'
 
 Vue.use(VueResource)
 Vue.use(VueLocalStorage)
-Vue.use(VueWebsocket, 'ws://localhost:8080')
+Vue.use(VueWebsocket, 'ws://192.168.0.22:8080')
 Vue.use(VueAuthenticate, {
   baseUrl: 'https://accounts.spotify.com/authorize', // Your API domain
 
