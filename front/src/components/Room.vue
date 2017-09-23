@@ -5,7 +5,7 @@
       <h2>{{ roomId.toUpperCase() }}</h2>
 
       <section v-if="hasCurrent">
-        <div v-if="!isHost" class='details'>
+        <div class='details'>
           <img
             :src='current.snippet.thumbnails.default.url'
             class='current-album'
@@ -16,9 +16,11 @@
             <p>Votado por: Pepe, Jorge y 3 más</p>
           </div>
         </div>
-        <div v-else>
+        <div v-if="isHost" >
           <h3 class="now-playing">Now playing</h3>
-          <div id="player"></div>
+          <div id="player-container">
+            <div id="player"></div>
+          </div>
         </div>
       </section>
       <section v-else class="no-current">
@@ -97,13 +99,6 @@
       },
       loadPlayer (videoId) {
         YouTubeIframeLoader.load((YT) => {
-          const dimensions = getPlayerDimensions()
-          console.info(dimensions)
-
-          function onPlayerReady (event) {
-            console.info(event)
-          }
-
           function onStateChange (event) {
             switch (event.data) {
               case YT.PlayerState.PLAYING:
@@ -119,25 +114,14 @@
             }
           }
 
-          function getPlayerDimensions () {
-            const mq = window.matchMedia('min-width: 641px')
-            let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-
-            return {
-              w: (mq.matches ? w / 1.5 : w) - 60,
-              h: w / 1.64
-            }
-          }
-
           this.player = new YT.Player('player', {
-            height: dimensions.h,
-            width: dimensions.w,
+            height: '100%',
+            width: '100%',
             videoId: videoId,
             playerVars: {
               autoplay: 1
             },
             events: {
-              onReady: onPlayerReady,
               onStateChange: onStateChange.bind(this)
             }
           })
@@ -158,11 +142,6 @@
 
             return 0
           })
-
-          debugger
-          if (this.songs.length > 0 && !this.currentSong) {
-            this.$socket.emit('next', this.roomId)
-          }
         },
         current (currentSong) {
           this.currentSong = currentSong
@@ -229,17 +208,15 @@
     text-align: left;
   }
 
-  #player {
+  #player-container {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
-    padding-top: 25px;
+    padding-bottom: 51%; /* 16:9 */
     height: 0;
   }
-  #player iframe {
+
+  iframe {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
   }
 </style>
