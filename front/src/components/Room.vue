@@ -6,7 +6,7 @@
       :with-search="true">
     </navigation>
     <div class='content'>
-      <h2 class="title">Playing at your Room</h2>
+      <h2 class="title">Playing at {{ roomId }}'s Room </h2>
 
       <section v-if="hasCurrent" class="info-container">
         <div class='details'>
@@ -17,7 +17,8 @@
           <div class='info'>
             <h2>{{ currentSong.snippet.title }}</h2>
             <h3>{{ currentSong.snippet.channelTitle }}</h3>
-            <p>Votes {{ currentSong.votes.length }}</p>
+            <p>{{ detailedVotes }}</p>
+            <p>Duration: {{ getSongLength }}</p>
           </div>
         </div>
         <div v-if="isHost">
@@ -35,7 +36,9 @@
       </section>
 
     </div>
-    <player v-if="isHost" :playing="isPlaying" :progress="progress" :on-toggle="onToggle"></player>
+    <player v-if="isHost" :playing="isPlaying" :progress="progress"
+            :total="playerTotalTime" :on-toggle="onToggle"
+            :current="playerCurrentTime"></player>
   </div>
 </template>
 
@@ -57,7 +60,9 @@
         roomId: this.$route.params.username,
         isPlaying: false,
         player: null,
-        progress: 0
+        progress: 0,
+        playerTotalTime: 0,
+        playerCurrentTime: 0
       }
     },
     created: function () {
@@ -74,6 +79,18 @@
       },
       hasCurrent () {
         return Object.keys(this.currentSong).length > 0
+      },
+      detailedVotes () {
+        if (this.currentSong.votes.length === 1) {
+          return `Added by ${this.currentSong.votes[0]}`
+        } else if (this.currentSong.votes.length === 2) {
+          return `${this.currentSong.votes[0]} and ${this.currentSong.votes[1]}`
+        } else {
+          return `${this.currentSong.votes[0]}, ${this.currentSong.votes[1]} and ${this.currentSong.votes.length - 2} more`
+        }
+      },
+      getSongLength () {
+        return (this.playerTotalTime / 60).toFixed(2)
       }
     },
     methods: {
@@ -132,9 +149,10 @@
             switch (event.data) {
               case YT.PlayerState.PLAYING:
                 this.isPlaying = true
-                let playerTotalTime = this.player.getDuration()
+                this.playerTotalTime = this.player.getDuration()
                 mytimer = setInterval(() => {
-                  this.progress = (this.player.getCurrentTime() / playerTotalTime) * 100
+                  this.playerCurrentTime = this.player.getCurrentTime()
+                  this.progress = (this.playerCurrentTime / this.playerTotalTime) * 100
                 }, 1000)
                 break
               case YT.PlayerState.ENDED:

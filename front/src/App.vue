@@ -10,17 +10,14 @@
 
 <script>
   import Navigation from './components/Navigation'
-  import makeId from './utils/makeId'
 
   export default {
     name: 'app',
     components: {Navigation},
     created () {
-      if (this.$localStorage.get('id') === 'false') {
-        this.$localStorage.set('id', makeId())
-      }
       console.info(this.$localStorage.get('id'))
     }
+
   }
 </script>
 

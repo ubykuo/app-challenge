@@ -15,6 +15,7 @@
   import Navigation from './Navigation'
   import RoomList from './RoomList'
   import RoomButton from './RoomButton'
+  import randomName from '../utils/randomName'
 
   export default {
     name: 'hello',
@@ -31,6 +32,7 @@
       }
     },
     created () {
+      this.$localStorage.set('id', randomName())
       this.$socket.emit('init')
     },
     socket: {

@@ -11,6 +11,7 @@
 
     <div class="actions" v-if="isPlaylist">
       <div v-if="isHost" class="action" @click="onRemove(detail)">
+        <span>{{ voteCount }}</span>
         <i class="fa fa-2x fa-trash"></i>
       </div>
 

@@ -2,7 +2,9 @@
   <div class="player-container">
     <progress-bar :progress="progress"></progress-bar>
     <div class="player">
-      <span @click="onToggle"><i class="fa fa-2x" :class="getPlayingIcon"></i></span>
+      <span class="duration">{{ getCurrentTime }}</span>
+      <span @click="onToggle"><i class="fa fa-2x"
+                                 :class="getPlayingIcon"></i></span>
       <span @click="forward"><i class="fa fa-2x fa-forward"></i></span>
     </div>
   </div>
@@ -22,8 +24,16 @@
         type: Number,
         required: true
       },
+      total: {
+        type: Number,
+        required: true
+      },
       onToggle: {
         type: Function,
+        required: true
+      },
+      current: {
+        type: Number,
         required: true
       }
     },
@@ -34,6 +44,18 @@
       }
     },
     computed: {
+      getSongLength () {
+        return Math.floor(this.total / 60)
+      },
+      getSongLengthFixed () {
+        return (this.total / 60).toFixed(2)
+      },
+      getCurrentTime () {
+        let minutes = Math.floor(this.current / 60)
+        let seconds = Math.floor(this.current) % 60
+        let secondsFormat = (seconds > 9) ? seconds : `0${seconds}`
+        return `${minutes}:${secondsFormat}`
+      },
       getPlayingIcon () {
         return this.playing ? 'fa-pause' : 'fa-play'
       }
@@ -71,5 +93,10 @@
     &:not(:last-child) {
       margin-right: 20px;
     }
+  }
+  .duration {
+    color: $secondary;
+    font-weight: bold;
+    margin-right: 5px;
   }
 </style>
