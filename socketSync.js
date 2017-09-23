@@ -20,10 +20,13 @@ const socketSync = {
             return Room.findOne({"room_id": room_id});
           })
           .then((room) => {
-            console.log(room)
             client.join(room.room_id);
-            client.emit('room', room);
+            client.emit('room ', room);
+            return Room.find({});
           })
+          .then((rooms) => {
+            io.emit('rooms', rooms);
+          });
       });
 
       client.on('add-song', (user_id, room_id, song) => {
