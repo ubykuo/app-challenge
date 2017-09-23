@@ -20,7 +20,8 @@
         <song-list
           :songs="songs"
           :is-host="false"
-          :is-playlist="false">
+          :is-playlist="false"
+          :on-select="toggle">
         </song-list>
       </div>
     </div>

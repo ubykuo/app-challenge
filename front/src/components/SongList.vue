@@ -2,7 +2,7 @@
   <div class="song-list">
     <ul v-if="songs.length > 0">
       <li v-for="data in songs">
-        <song :detail="data" :is-host="isHost" :is-playlist="isPlaylist"></song>
+        <song :detail="data" :is-host="isHost" :is-playlist="isPlaylist" :on-select="onSelect"></song>
       </li>
     </ul>
     <div v-else class="no-songs">
@@ -29,6 +29,11 @@
         type: Boolean,
         required: false,
         default: true
+      },
+      onSelect: {
+        type: Function,
+        required: false,
+        default: () => {}
       }
     },
     created () {

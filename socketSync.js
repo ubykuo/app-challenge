@@ -75,6 +75,7 @@ const socketSync = {
             return Room.findOne({"room_id": room_id});
           })
           .then((room) => {
+            console.log(room)
             client.join(room.room_id);
             client.emit('room', room);
           })

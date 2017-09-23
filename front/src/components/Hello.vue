@@ -31,14 +31,12 @@
       }
     },
     created () {
-      debugger
       this.$socket.emit('rooms')
     },
     socket: {
       events: {
-        rooms (rooms) {
-          debugger
-          this.rooms = rooms
+        rooms (currentRooms) {
+          this.rooms = currentRooms
         }
       }
     }

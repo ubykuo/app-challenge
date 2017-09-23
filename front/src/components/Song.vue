@@ -44,6 +44,10 @@
       },
       isPlaylist: {
         type: Boolean
+      },
+      onSelect: {
+        type: Function,
+        required: false
       }
     },
     computed: {
@@ -69,12 +73,13 @@
         })
       },
       addToPlaylist (song) {
-        this.$socket.emit('addSong', {
-          user: this.$localStorage.get('id'),
-          room: this.$route.params.username,
-          song: this.song
-        })
-        console.log(song.id, song.uri)
+        this.$socket.emit('add-song',
+          this.$localStorage.get('id'),
+          this.$route.params.username,
+          this.song
+        )
+
+        this.onSelect()
       }
     }
   }
