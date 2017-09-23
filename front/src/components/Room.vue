@@ -1,23 +1,26 @@
 <template>
   <div class='room'>
-    <navigation :on-search='onKeyUp' :songs='results'></navigation>
+    <navigation
+      :on-search='onKeyUp'
+      :songs='results'
+      :with-search="true">
+    </navigation>
     <div class='content'>
-      <h2>{{ roomId.toUpperCase() }}</h2>
+      <h2 class="title">Your Room</h2>
 
       <section v-if="hasCurrent">
         <div class='details'>
           <img
-            :src='current.snippet.thumbnails.default.url'
+            :src='currentSong.snippet.thumbnails.medium.url'
             class='current-album'
             alt='Album cover'>
           <div class='info'>
-            <h2>{{ current.snippet.title }}</h2>
-            <h3>{{ current.snippet.channelTitle }}</h3>
-            <p>Votado por: Pepe, Jorge y 3 más</p>
+            <h2>{{ currentSong.snippet.title }}</h2>
+            <h3>{{ currentSong.snippet.channelTitle }}</h3>
+            <p>Votes {{ currentSong.votes.length }}</p>
           </div>
         </div>
         <div v-if="isHost" >
-          <h3 class="now-playing">Now playing</h3>
           <div id="player-container">
             <div id="player"></div>
           </div>
@@ -193,6 +196,16 @@
     justify-content: center;
     padding: 20px 0 30px 0;
     height: 30vh;
+
+    @media (max-width: 641px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .info {
+        padding-top: 20px;
+      }
+    }
   }
 
   .info {
@@ -210,7 +223,6 @@
 
   #player-container {
     position: relative;
-    padding-bottom: 51%; /* 16:9 */
     height: 0;
   }
 
@@ -218,5 +230,13 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  .title {
+    margin: 25px;
+
+    @media (max-width: 641px) {
+      text-align: center;
+    }
   }
 </style>

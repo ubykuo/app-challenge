@@ -6,8 +6,9 @@
     </div>
     <div :class="{visible: showNav}" class="overlay">
       <div class="header">
-        <div class="search-box">
-          <input @keyup="onSearch(query)" v-model="query"
+        <div v-if="withSearch" class="search-box">
+          <input @keyup="onSearch(query)"
+                 v-model="query"
                  placeholder="Search for a song..."
                  autofocus />
         </div>
@@ -50,6 +51,13 @@
         required: false,
         default: () => {
           return []
+        }
+      },
+      withSearch: {
+        type: Boolean,
+        required: false,
+        default: () => {
+          return false
         }
       }
     },
