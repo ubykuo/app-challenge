@@ -76,7 +76,7 @@
         this.$socket.emit('add-song',
           this.$localStorage.get('id'),
           this.$route.params.username,
-          this.song
+          song
         )
 
         this.onSelect()

@@ -1,7 +1,7 @@
 "use strict";
 const ioClient = require('socket.io-client');
 
-let socket = new ioClient("http://localhost:3000");
+let socket = new ioClient("http://localhost:8080");
 
 const ROOM_ID = 11138721142;
 
@@ -17,11 +17,11 @@ socket.on('connect', function () {
   console.log('connect');
 });
 
-socket.emit('access-room', 123456789);
+socket.emit('access-room', 123);
 
-/*socket.emit('add-song', 1, 123456789, {
+socket.emit('add-song', 1, 123, {
   id: "213kl123klj"
-});*/
+});
 
 /*socket.emit('vote', 123, 123456789, {
   id: "213kl123klj"
@@ -31,7 +31,7 @@ socket.emit('access-room', 123456789);
   id: "213kl123klj"
 });*/
 
-socket.emit('next', 123456789);
+//socket.emit('next', 123456789);
 
 socket.on('room', (room) => {
   console.log(room);
