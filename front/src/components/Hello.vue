@@ -30,13 +30,13 @@
         this.$router.push(`/room/${username}`)
       }
     },
-    created () {
-      this.$socket.emit('init')
-    },
     socket: {
       events: {
         rooms (currentRooms) {
           this.rooms = currentRooms
+        },
+        connect () {
+          this.$socket.emit('init')
         }
       }
     }
