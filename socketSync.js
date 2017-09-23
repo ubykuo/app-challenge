@@ -54,7 +54,7 @@ const socketSync = {
           })
           .then(function (room) {
             for (let i = 0; i < room.songs.length; i++) {
-              if (room.songs[i].id === song.id) {
+              if (room.songs[i].id.videoId === song.id.videoId) {
                 room.songs.splice(i, 1);
                 break;
               }
@@ -96,7 +96,7 @@ const socketSync = {
               room.current = nextSong;
 
               for (let i = 0; i < room.songs.length; i++) {
-                if (room.songs[i].id === nextSong.id) {
+                if (room.songs[i].id.videoId === song.id.videoId) {
                   room.songs.splice(i, 1);
                   break;
                 }
