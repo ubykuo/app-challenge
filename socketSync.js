@@ -9,7 +9,7 @@ const socketSync = {
 
     io.on('connection', function (client) {
 
-      client.on('rooms', () => {
+      client.on('init', () => {
         Room.find({}).then((rooms) => client.emit('rooms', rooms));
       });
 

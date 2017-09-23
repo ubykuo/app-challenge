@@ -16,9 +16,12 @@
 
       <div v-else-if="!isHost && !hasVoted" class="action"
            @click="onVote(detail)">
+        <span>{{ voteCount }}</span>
         <i class="fa fa-2x fa-thumbs-up"></i>
       </div>
-      <div v-else class="action">
+
+      <div v-else-if="!isHost && hasVoted" class="action">
+        <span>{{ voteCount }}</span>
         <i class="fa fa-2x fa-check"></i>
       </div>
     </div>
@@ -55,23 +58,29 @@
         return this.detail.snippet.thumbnails[config.CLIENT_ID].default.url
       },
       hasVoted () {
-        return false
+        const id = this.$localStorage.get('id')
+        return (this.detail.votes.find(vote => {
+          return vote === id
+        }) !== undefined)
+      },
+      voteCount () {
+        return this.isPlaylist ? this.detail.votes.length : 0
       }
     },
     methods: {
       onRemove (song) {
-        debugger
         this.$socket.emit('remove',
           this.$route.params.username,
           song
         )
       },
       onVote (song) {
-        this.$emit('vote', {
-          user: this.$localStorage.get('id'),
-          room: this.$route.params.username,
-          song: this.song
-        })
+        debugger
+        this.$socket.emit('vote',
+          this.$localStorage.get('id'),
+          this.$route.params.username,
+          song
+        )
       },
       addToPlaylist (song) {
         this.$socket.emit('add-song',

@@ -131,9 +131,23 @@
     socket: {
       events: {
         room (currentRoom) {
-          debugger
           this.current = currentRoom.current || {}
-          this.songs = currentRoom.songs
+          this.songs = currentRoom.songs.sort((a, b) => {
+            if (a.votes.length < b.votes.length) {
+              return 1
+            }
+
+            if (a.votes.length > b.votes.length) {
+              return -1
+            }
+
+            return 0
+          })
+        },
+        destroyed () {
+          if (!this.isHost) {
+            this.$router.push('/')
+          }
         }
       }
     }
