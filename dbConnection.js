@@ -1,7 +1,7 @@
 "use strict";
 const mongoose = require('mongoose');
 
-const mongoUrl = "mongodb://appc:v9cCrvEN@ds139994.mlab.com:39994/app-challenge";
+const mongoUrl = process.env.MONGO_URL;
 
 mongoose.Promise = require('bluebird');
 
