@@ -3,7 +3,8 @@
 		"name": "music-room",
 		"script": "index.js",
 		"env_production": {
-			"MONGO_URL": "mongodb://appc:v9cCrvEN@ds139994.mlab.com:39994/app-challenge"
+			"MONGO_URL": "mongodb://appc:v9cCrvEN@ds139994.mlab.com:39994/app-challenge",
+			"PORT": 80
 		}
 	}]
 }
