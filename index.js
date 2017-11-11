@@ -21,6 +21,6 @@ app.use((req, res) => {
 });
 
 //Start Server
-server.listen(config.port, function () {
+server.listen(config.port, '127.0.0.1', function () {
   console.log('App Challenge listening on port', config.port);
 });
