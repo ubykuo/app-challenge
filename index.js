@@ -33,7 +33,7 @@ app.use((req, res) => {
 
 //Start Server
 if (process.env.PRODUCTION) {
-  let redirect = express.createServer();
+  let redirect = require('http').createServer();
 
   redirect.get('*', (req, res) => {
     res.redirect('https://' + req.headers.host + req.url);
