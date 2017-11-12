@@ -6,7 +6,16 @@ const config = require(__dirname + '/config');
 
 const app = express();
 
-const server = require('http').createServer(app);
+if (process.env.PRODUCTION) {
+  const server = require('https').createServer(app, {
+    key: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/chain.pem')
+  });
+} else {
+  const server = require('http').createServer(app);
+}
+
 const io = require('socket.io')(server);
 
 //Init socket
