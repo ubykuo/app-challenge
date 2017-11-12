@@ -38,6 +38,8 @@ if (process.env.PRODUCTION) {
   redirect.get('*', (req, res) => {
     res.redirect('https://' + req.headers.host + req.url);
   });
+
+  redirect.listen(80);
 }
 
 server.listen(config.port, '0.0.0.0', function () {
