@@ -33,13 +33,16 @@ app.use((req, res) => {
 
 //Start Server
 if (process.env.PRODUCTION) {
-  let redirect = require('http').createServer();
+  const redirectApp = express();
+  const redirectRouter = express.Router();
+  redirectApp.use('*', redirectRouter);
 
-  redirect.get('*', (req, res) => {
-    res.redirect('https://' + req.headers.host + req.url);
+  redirectRouter.get('*', (req, res) => {
+    return res.redirect('https://' + req.headers.host + req.url);
   });
 
-  redirect.listen(80);
+  const redirectServer = require('http').createServer(redirectApp);
+  redirectServer.listen(80);
 }
 
 server.listen(config.port, '0.0.0.0', function () {
