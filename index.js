@@ -32,6 +32,14 @@ app.use((req, res) => {
 });
 
 //Start Server
+if (process.env.PRODUCTION) {
+  let redirect = express.createServer();
+
+  redirect.get('*', (req, res) => {
+    res.redirect('https://' + req.headers.host + req.url);
+  });
+}
+
 server.listen(config.port, '0.0.0.0', function () {
   console.log('App Challenge listening on port', config.port);
 });
