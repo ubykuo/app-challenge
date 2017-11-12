@@ -7,6 +7,7 @@ const config = require(__dirname + '/config');
 const app = express();
 
 if (process.env.PRODUCTION) {
+  const fs = require('fs');
   const server = require('https').createServer(app, {
     key: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/cert.pem'),
