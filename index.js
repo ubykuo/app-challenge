@@ -3,16 +3,16 @@ const express = require('express');
 const socketSync = require(__dirname + '/socketSync');
 const mongoose = require(__dirname + '/dbConnection');
 const config = require(__dirname + '/config');
+const fs = require('fs');
 
 const app = express();
 
 if (process.env.PRODUCTION) {
-  const fs = require('fs');
-  const server = require('https').createServer(app, {
+  const server = require('https').createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/music-room.ubykuo.com/chain.pem')
-  });
+  }, app);
 } else {
   const server = require('http').createServer(app);
 }
